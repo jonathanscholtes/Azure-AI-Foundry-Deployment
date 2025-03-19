@@ -74,7 +74,7 @@ def Loaders(myblob: func.InputStream):
 
         file_name = myblob.name.split('/')[-1] 
         loader = DocumentLoader(data)
-        chunks = loader.load_chunk_document(title=file_name, chunk_size=int(environ.get("DOCUMENT_CHUNK_SIZE")),chunk_overlap=int(environ.get("DOCUMENT_CHUNK_OVERLAP")))
+        chunks = loader.load_chunk_document(chunk_size=int(environ.get("DOCUMENT_CHUNK_SIZE")),chunk_overlap=int(environ.get("DOCUMENT_CHUNK_OVERLAP")))
         
 
         logging.info(f"****** Loading Index *****")
@@ -94,7 +94,7 @@ def Loaders(myblob: func.InputStream):
             # Decode the Base64 string into bytes
             decoded_bytes = base64.b64decode(base64_string)
 
-            blobManager.load_binay_data(decoded_bytes,f"{data['resource_id']}/{page['page_id']}.png","images")
+            blobManager.load_data(decoded_bytes,f"{data['resource_id']}/{page['page_id']}.png","images")
 
 
     except Exception as e:
@@ -131,11 +131,12 @@ class DocumentLoader:
         
         documents: List[Document] = []
         
-        title = self.data['title']
+        title = self.data['title'] 
         resource_id = self.data['resource_id']
         pages = self.data['pages']
 
-        documents: list[Document] = [self._create_document(page, resource_id, title) for page in enumerate(pages)]
+        logging.info(f"Iter pages.")
+        documents: list[Document] = [self._create_document(page, resource_id, title) for page in pages]
     
         text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size, 

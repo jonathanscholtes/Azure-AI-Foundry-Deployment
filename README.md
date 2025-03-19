@@ -161,7 +161,22 @@ Run the following PowerShell command to deploy the solution. Replace the placeho
 ✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **40 minutes** to complete.
 
 
-#### 3. Download the VPN Client  (Optional)
+### 3. Configure Storage Account Access  
+
+To upload sample documents into the Azure Storage Account and enable embedding creation, you must allow access by configuring the Storage Account firewall settings. This ensures that your local environment can communicate with Azure services.
+
+Follow these steps to add your client IP address to the firewall settings:
+
+1. Log in to the [Azure portal](https://portal.azure.com).
+2. Navigate to your **Storage Account**.
+3. In the **Networking** section, go to **Public network access** and select **Manage**.
+4. Add your current client IP address to the list of allowed addresses.
+
+### 4. Upload Documents for Indexing with Azure Function  
+
+Upload the JSON documents from the [data](data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
+
+#### 5. Download the VPN Client  (Optional)
 Once the deployment is complete, follow these steps to download the VPN client:  
 - Go to the **Azure Portal** → **Virtual Network Gateway** → **Point-to-Site Configuration**.  
 - Click **Download VPN Client**.  

@@ -35,7 +35,10 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2023-08-01-preview'
   name: aiHubName
   location: location
   identity: {
-    type: 'SystemAssigned'
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: {
+    '${managedIdentity.id}': {}
+    }
   }
   properties: {
     friendlyName: aiHubFriendlyName
@@ -48,39 +51,39 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2023-08-01-preview'
   }
   kind: 'hub'
 
-  resource aiServicesConnection 'connections@2024-01-01-preview' = {
-    name: '${aiHubName}-connection-AzureOpenAI'
-    properties: {
-      category: 'AzureOpenAI'
-      target: aiServicesTarget
-      authType: 'ApiKey'
-      isSharedToAll: true
-      credentials: {
-        key: '${listKeys(aiServicesId, '2021-10-01').key1}'
-      }
-      metadata: {
-        ApiType: 'Azure'
-        ResourceId: aiServicesId
-      }
+}
+
+resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
+  parent: aiHub
+  name: '${aiHubName}-connection-AzureOpenAI'
+  properties: {
+    category: 'AzureOpenAI'
+    target: aiServicesTarget
+    authType: 'ApiKey'
+    isSharedToAll: true
+    credentials: {
+      key: '${listKeys(aiServicesId, '2021-10-01').key1}'
+    }
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: aiServicesId
     }
   }
+}
 
-  resource aiSearchConnection 'connections@2024-01-01-preview' = {
-    name: '${aiHubName}-connection-AzureAISearch'
-    properties: {
-      category: 'AzureAISearch'
-      target: aiSearchTarget
-      authType: 'ManagedIdentity'
-      isSharedToAll: true
-      credentials: {
-        clientId: managedIdentity.id  
-      }
-      metadata: {
-        ResourceId: searchServiceId
-      }
+resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
+  parent: aiHub
+  name: '${aiHubName}-connection-AzureAISearch'
+  properties: {
+    category: 'CognitiveSearch'
+    target: aiSearchTarget
+    authType: 'AAD'
+    isSharedToAll: true
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: searchServiceId
     }
   }
-
 }
 
 output aiHubID string = aiHub.id

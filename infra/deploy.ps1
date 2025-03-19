@@ -25,10 +25,10 @@ if ($DeployVpnGateway.IsPresent) {
     Set-Location -Path .\scripts
 
     # Create Gateway Cert
-    Write-Output "*****************************************"
-    Write-Output "Create VPN Gateway Cert"
-    Write-Output "If timeout occurs, rerun the following command from scripts:"
-    Write-Output ".\generate_certs.ps1 "
+    Write-Host "*****************************************"
+    Write-Host "Create VPN Gateway Cert"
+    Write-Host "If timeout occurs, rerun the following command from scripts:"
+    Write-Host ".\generate_certs.ps1 "
     $rootCertData = & .\generate_certs.ps1
 
     Set-Location -Path ..
@@ -53,20 +53,28 @@ $deploymentOutputJson = $deploymentOutput | ConvertFrom-Json
 $resourceGroupName = $deploymentOutputJson.resourceGroupName.value
 $functionAppName = $deploymentOutputJson.functionAppName.value
 
+Write-Host "Waiting for App Services before pushing code"
 
-Start-Sleep -Seconds 300
+$waitTime = 200  # Total wait time in seconds
+
+# Display counter
+for ($i = $waitTime; $i -gt 0; $i--) {
+    Write-Host "`rWaiting: $i seconds remaining..." -NoNewline
+    Start-Sleep -Seconds 1
+}
+
+Write-Host "`rWait time completed!" 
 
 Set-Location -Path .\scripts
 
-
 # Deploy Function Application
-Write-Output "*****************************************"
-Write-Output "Deploying Function Application from scripts"
-Write-Output "If timeout occurs, rerun the following command from scripts:"
-Write-Output ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName"
+Write-Host "*****************************************"
+Write-Host "Deploying Function Application from scripts"
+Write-Host "If timeout occurs, rerun the following command from scripts:"
+Write-Host ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName"
 & .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName
 
 
 Set-Location -Path ..
 
-Write-Output "Deployment Complete"
+Write-Host "Deployment Complete"
