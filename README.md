@@ -125,7 +125,7 @@ This module implements **end-to-end observability** by configuring logging, moni
 
 ---
 
-## Usage
+## 🚀 Usage
 
 ### Requirements  
 - **Azure Subscription:** Ensure you have an active Azure subscription with sufficient privileges to create and manage resources.  
@@ -161,7 +161,10 @@ Run the following PowerShell command to deploy the solution. Replace the placeho
 ✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **40 minutes** to complete.
 
 
-### 3. Configure Storage Account Access  
+
+### Loading Index Data and Validating
+
+#### 1. Configure Storage Account Access  
 
 To upload sample documents into the Azure Storage Account and enable embedding creation, you must allow access by configuring the Storage Account firewall settings. This ensures that your local environment can communicate with Azure services.
 
@@ -172,11 +175,37 @@ Follow these steps to add your client IP address to the firewall settings:
 3. In the **Networking** section, go to **Public network access** and select **Manage**.
 4. Add your current client IP address to the list of allowed addresses.
 
-### 4. Upload Documents for Indexing with Azure Function  
+#### 2. Upload Documents for Indexing with Azure Function  
 
 Upload the JSON documents from the [data](data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
 
-#### 5. Download the VPN Client  (Optional)
+#### 3. Add Vector Index to Azure AI Foundry
+In-order to use the Playground to chat over the vector data storaed in Azure AI Search, we will have to add our Azure AI Search index as a data soruce.
+
+**Add Azure AI Search Index**
+
+
+**Select AI Search Source Location**
+Select **Azure AI Search** as the data source:
+![source location](./media/vector_index_source_location.png)
+
+**Select AI Search Source Index**
+Then select the instance of **Azure AI Search** that has been deployed as a connection with this solution and select the index _contract-index_:
+
+![source location](./media/vector_index_source_index.png)
+
+**Select AI Search Settings**
+In-order to perform a vector search we will need to specify a text embedding mode, select the mode _text-embedding_ that is deployed to **Azure AI Foundry** with this solution: 
+![source location](./media/vector_index_search_setting.png)
+
+**Select AI Search Index Settings**
+Finaly keep the defaults before processed to the review and finish step:
+![source location](./media/vector_index_settings.png)
+
+
+---
+
+### Download the VPN Client  (Optional)
 Once the deployment is complete, follow these steps to download the VPN client:  
 - Go to the **Azure Portal** → **Virtual Network Gateway** → **Point-to-Site Configuration**.  
 - Click **Download VPN Client**.  
@@ -186,12 +215,12 @@ Once the deployment is complete, follow these steps to download the VPN client:
 
 ---
 
-## Clean-Up
+## ♻️ Clean-Up
 
 After completing testing, ensure to delete any unused Azure resources or remove the entire Resource Group to avoid incurring additional charges.
 
 
-## License
+## 📜 License
 This project is licensed under the [MIT License](LICENSE.md), granting permission for commercial and non-commercial use with proper attribution.
 
 

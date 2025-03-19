@@ -88,6 +88,8 @@ module azureai 'core/ai/main.bicep' = {
     searchServicename: 'srch-${projectName}-${environmentName}-${resourceToken}'
     vnetId: networking.outputs.vnetId
     subnetName: 'aiSubnet'
+    storageAccountId:data.outputs.storageAccountId
+    storageAccountTarget: data.outputs.storageAccountBlobEndPoint
   }
 
 }

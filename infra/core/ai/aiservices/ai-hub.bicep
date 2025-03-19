@@ -20,6 +20,10 @@ param aiServicesTarget string
 
 param aiSearchTarget string
 
+param storageAccountTarget string
+
+param storageAccountId string
+
 param applicationInsightsId string
 
 param identityName string
@@ -45,6 +49,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2023-08-01-preview'
     description: aiHubDescription
     keyVault: keyVaultId
     applicationInsights:applicationInsightsId
+    storageAccount: storageAccountId
     managedNetwork: {
       isolationMode: 'AllowInternetOutbound'
     }
@@ -76,12 +81,33 @@ resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connec
   name: '${aiHubName}-connection-AzureAISearch'
   properties: {
     category: 'CognitiveSearch'
-    target: aiSearchTarget
-    authType: 'AAD'
+    target: '${aiSearchTarget}workspace'
+    authType: 'ApiKey'
     isSharedToAll: true
+    credentials: {
+      key: '${listAdminKeys(searchServiceId, '2021-04-01-preview').primaryKey}'
+    }
     metadata: {
       ApiType: 'Azure'
       ResourceId: searchServiceId
+    }
+  }
+}
+
+resource aiStorageConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
+  parent: aiHub
+  name: '${aiHubName}-connection-AzureBlob'                         
+  properties: {
+    category: 'AzureBlob'
+    target: storageAccountTarget
+    authType: 'AccountKey'
+    isSharedToAll: true
+    credentials: {
+      key: listKeys(storageAccountId, '2021-09-01').keys[0].value  // Primary key
+    }
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: storageAccountId
     }
   }
 }

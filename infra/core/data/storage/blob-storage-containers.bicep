@@ -20,6 +20,11 @@ resource completedContainer 'Microsoft.Storage/storageAccounts/blobServices/cont
   name: 'completed'
 }
 
+resource workspaceContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-04-01' = {
+  parent: blobServices
+  name: 'workspace'
+}
+
 resource imagesContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-04-01' = {
   parent: blobServices
   name: 'images'

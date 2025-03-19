@@ -10,8 +10,12 @@ module search_service 'search-service.bicep' = {
    name: searchServicename
    location:location
     semanticSearch: 'standard'
-    disableLocalAuth: true
-    publicNetworkAccess: 'disabled'
+    disableLocalAuth: false
+    authOptions: {
+      aadOrApiKey: {
+        aadAuthFailureMode: 'http403'
+      }}
+    publicNetworkAccess: 'enabled'
     vnetId:vnetId
     subnetName:subnetName
  }

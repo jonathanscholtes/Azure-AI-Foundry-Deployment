@@ -27,3 +27,4 @@ resource storageAcct 'Microsoft.Storage/storageAccounts@2023-05-01' = {
 }
 
 output storageAccountBlobEndPoint string = 'https://${storageAcct.name}.blob.core.windows.net/'
+output storageAccountId string = storageAcct.id

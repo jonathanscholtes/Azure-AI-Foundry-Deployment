@@ -21,4 +21,5 @@ params:{
 
 output storageAccountBlobEndPoint string = storage.outputs.storageAccountBlobEndPoint
 output storageAccountName string = storageAccountName
+output storageAccountId string = storage.outputs.storageAccountId
 

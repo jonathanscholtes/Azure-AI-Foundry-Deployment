@@ -42,4 +42,4 @@ module storagePe 'blob-storage-pe.bicep' = {
 }
 
 output storageAccountBlobEndPoint string = storageAccount.outputs.storageAccountBlobEndPoint
-
+output storageAccountId string = storageAccount.outputs.storageAccountId
