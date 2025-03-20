@@ -9,6 +9,7 @@ param subnetName string
 param applicationInsightsId string
 param storageAccountId string
 param storageAccountTarget string
+param storageAccountName string
 
 
 @description('Resource ID of the key vault resource for storing connection strings')
@@ -42,6 +43,7 @@ module aiServices 'aiservices/main.bicep' = {
     aiSearchTarget:search.outputs.searchServiceEndpoint
     storageAccountId:storageAccountId
     storageAccountTarget:storageAccountTarget
+    storageAccountName:storageAccountName
   }
 
 }

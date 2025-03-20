@@ -162,6 +162,16 @@ Run the following PowerShell command to deploy the solution. Replace the placeho
 
 
 
+#### 3. Download the VPN Client  (Optional)
+
+
+Once the deployment is complete, follow these steps to download the VPN client:  
+- Go to the **Azure Portal** → **Virtual Network Gateway** → **Point-to-Site Configuration**.  
+- Click **Download VPN Client**.  
+- Install the client on your local machine to securely connect to the Azure environment.
+
+---
+
 ### Loading Index Data and Validating
 
 #### 1. Configure Storage Account Access  
@@ -180,6 +190,7 @@ Follow these steps to add your client IP address to the firewall settings:
 Upload the JSON documents from the [data](data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
 
 #### 3. Add Vector Index to Azure AI Foundry
+
 In-order to use the Playground to chat over the vector data storaed in Azure AI Search, we will have to add our Azure AI Search index as a data soruce.
 
 **Add Azure AI Search Index**
@@ -201,16 +212,6 @@ In-order to perform a vector search we will need to specify a text embedding mod
 **Select AI Search Index Settings**
 Finaly keep the defaults before processed to the review and finish step:
 ![source location](./media/vector_index_settings.png)
-
-
----
-
-### Download the VPN Client  (Optional)
-Once the deployment is complete, follow these steps to download the VPN client:  
-- Go to the **Azure Portal** → **Virtual Network Gateway** → **Point-to-Site Configuration**.  
-- Click **Download VPN Client**.  
-- Install the client on your local machine to securely connect to the Azure environment.
-
 
 
 ---

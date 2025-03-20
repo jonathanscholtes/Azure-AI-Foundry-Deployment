@@ -90,6 +90,7 @@ module azureai 'core/ai/main.bicep' = {
     subnetName: 'aiSubnet'
     storageAccountId:data.outputs.storageAccountId
     storageAccountTarget: data.outputs.storageAccountBlobEndPoint
+    storageAccountName:data.outputs.storageAccountName
   }
 
 }

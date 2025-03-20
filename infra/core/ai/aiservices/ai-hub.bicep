@@ -30,6 +30,9 @@ param identityName string
 
 param searchServiceId string
 
+param storageContainerName string
+param storageAccountName string
+
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing= {
   name: identityName
@@ -81,7 +84,7 @@ resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connec
   name: '${aiHubName}-connection-AzureAISearch'
   properties: {
     category: 'CognitiveSearch'
-    target: '${aiSearchTarget}workspace'
+    target: aiSearchTarget
     authType: 'ApiKey'
     isSharedToAll: true
     credentials: {
@@ -100,14 +103,15 @@ resource aiStorageConnection 'Microsoft.MachineLearningServices/workspaces/conne
   properties: {
     category: 'AzureBlob'
     target: storageAccountTarget
-    authType: 'AccountKey'
+    authType: 'ApiKey'
     isSharedToAll: true
     credentials: {
-      key: listKeys(storageAccountId, '2021-09-01').keys[0].value  // Primary key
+      key: '${listKeys(storageAccountId, '2023-01-01').keys[0].value}'
     }
     metadata: {
       ApiType: 'Azure'
-      ResourceId: storageAccountId
+      ContainerName:storageContainerName
+      AccountName:storageAccountName
     }
   }
 }
