@@ -21,7 +21,7 @@ param keyVaultId string
 var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
 var aiProjectName  = 'prj-${projectName}-${environmentName}-${resourceToken}'
 
-module aiServices 'azure-ai-services.bicep' = {
+module aiServices 'modules/azure-ai-services.bicep' = {
   name: 'aiServices'
   params: {
     aiServicesName: aiServicesName
@@ -33,7 +33,7 @@ module aiServices 'azure-ai-services.bicep' = {
   }
 }
 
-module aiServicePE 'ai-service-private-endpoint.bicep' = { 
+module aiServicePE 'modules/ai-service-private-endpoint.bicep' = { 
   name: 'aiServicePE'
   params: { 
      aiServicesName:aiServicesName
@@ -44,28 +44,28 @@ module aiServicePE 'ai-service-private-endpoint.bicep' = {
   dependsOn:[aiServices]
 }
 
-module aiHub 'ai-hub.bicep' = {
+module aiHub 'modules/ai-hub.bicep' = {
   name: 'aihub'
   params:{
     aiHubName: 'hub-${projectName}-${environmentName}-${resourceToken}'
     aiHubDescription: 'Hub for demo'
-    aiServicesId:aiServices.outputs.aiservicesID
-    aiServicesTarget: '${aiServices.outputs.OpenAIEndPoint}/'
-    keyVaultId: keyVaultId
+    aiServicesResourceId:aiServices.outputs.aiservicesID
+    aiServicesEndpoint: '${aiServices.outputs.OpenAIEndPoint}/'
+    keyVaultResourceId: keyVaultId
     location: location
     aiHubFriendlyName: 'AI Demo Hub'
-    applicationInsightsId:applicationInsightsId
-    identityName:identityName
-    aiSearchTarget:aiSearchTarget
-    searchServiceId:searchServiceId
-    storageAccountId:storageAccountId
-    storageAccountTarget:storageAccountTarget
+    appInsightsResourceId:applicationInsightsId
+    managedIdentityName:identityName
+    aiSearchEndpoint:aiSearchTarget
+    aiSearchResourceId:searchServiceId
+    storageAccountResourceId:storageAccountId
+    blobStorageEndpoint:storageAccountTarget
     storageAccountName:storageAccountName
-    storageContainerName:'workspace'
+    blobContainerName:'workspace'
   }
 }
 
-module aihubPE 'ai-hub-private-endpoint.bicep' = { 
+module aihubPE 'modules/ai-hub-private-endpoint.bicep' = { 
   name: 'aihubPE'
   params: { 
     aiHubName: 'hub-${projectName}-${environmentName}-${resourceToken}'
@@ -76,10 +76,10 @@ module aihubPE 'ai-hub-private-endpoint.bicep' = {
   dependsOn:[aiHub]
 }
 
-module aiProject 'ai-project.bicep' = {
+module aiProject 'modules/ai-project.bicep' = {
   name: 'aiProject'
   params:{
-    aiHubResourceId:aiHub.outputs.aiHubID
+    aiHubResourceId:aiHub.outputs.aiHubResourceId
     location: location
     aiProjectName: aiProjectName
     aiProjectFriendlyName: 'AI Demo Project'
@@ -87,7 +87,7 @@ module aiProject 'ai-project.bicep' = {
   }
 }
 
-module aiModels 'ai-models.bicep' = {
+module aiModels 'modules/ai-models.bicep' = {
   name:'aiModels'
   params:{
     aiProjectName:aiProjectName

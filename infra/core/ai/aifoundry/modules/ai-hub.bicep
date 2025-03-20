@@ -1,0 +1,158 @@
+@description('Azure region of the deployment')
+param location string
+
+@description('Name of the AI hub')
+param aiHubName string
+
+@description('Friendly display name for the AI hub')
+param aiHubFriendlyName string
+
+@description('Description of the AI hub')
+param aiHubDescription string
+
+@description('Resource ID of the Key Vault for storing connection strings')
+param keyVaultResourceId string
+
+@description('Resource ID of the Azure AI Services instance')
+param aiServicesResourceId string
+
+@description('Target endpoint of the Azure AI Services instance')
+param aiServicesEndpoint string
+
+@description('Target endpoint of the Azure AI Search service')
+param aiSearchEndpoint string
+
+@description('Target endpoint of the Azure Blob Storage service')
+param blobStorageEndpoint string
+
+@description('Resource ID of the Azure Storage Account')
+param storageAccountResourceId string
+
+@description('Resource ID of the Application Insights instance')
+param appInsightsResourceId string
+
+@description('Name of the user-assigned managed identity')
+param managedIdentityName string
+
+@description('Resource ID of the Azure AI Search service')
+param aiSearchResourceId string
+
+@description('Name of the Azure Blob Storage container')
+param blobContainerName string
+
+@description('Name of the Azure Storage Account')
+param storageAccountName string
+
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: managedIdentityName
+}
+
+resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview' = {
+  name: aiHubName
+  location: location
+  identity: {
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
+  properties: {
+    friendlyName: aiHubFriendlyName
+    description: aiHubDescription
+    keyVault: keyVaultResourceId
+    applicationInsights: appInsightsResourceId
+    storageAccount: storageAccountResourceId
+    systemDatastoresAuthMode: 'ManagedIdentity'
+    provisionNetworkNow: true
+    managedNetwork: {
+      isolationMode: 'AllowInternetOutbound'
+    }
+    sharedPrivateLinkResources: [
+      {
+        name: 'aiSearch-private-link'
+        properties: {
+          groupId: 'searchService'
+          privateLinkResourceId: aiSearchResourceId
+          requestMessage: 'Private link to Azure AI Search'
+          status: 'Approved'
+        }
+      }
+      {
+        name: 'aiServices-private-link'
+        properties: {
+          groupId: 'account'
+          privateLinkResourceId: aiServicesResourceId
+          requestMessage: 'Private link to Azure AI Services'
+          status: 'Approved'
+        }
+      }
+      {
+        name: 'storage-private-link'
+        properties: {
+          groupId: 'blob'
+          privateLinkResourceId: storageAccountResourceId
+          requestMessage: 'Private link to Storage Account'
+          status: 'Approved'
+        }
+      }
+    ]
+  }
+  kind: 'hub'
+}
+
+resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
+  parent: aiHub
+  name: '${aiHubName}-connection-AI-Services'
+  properties: {
+    category: 'AzureOpenAI'
+    target: aiServicesEndpoint
+    authType: 'ApiKey'
+    isSharedToAll: true
+    credentials: {
+      key: '${listKeys(aiServicesResourceId, '2021-10-01').key1}'
+    }
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: aiServicesResourceId
+    }
+  }
+}
+
+resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
+  parent: aiHub
+  name: '${aiHubName}-connection-AzureAISearch'
+  properties: {
+    category: 'CognitiveSearch'
+    target: aiSearchEndpoint
+    authType: 'ApiKey'
+    isSharedToAll: true
+    credentials: {
+      key: '${listAdminKeys(aiSearchResourceId, '2021-04-01-preview').primaryKey}'
+    }
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: aiSearchResourceId
+    }
+  }
+}
+
+resource aiStorageConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
+  parent: aiHub
+  name: '${aiHubName}-connection-AzureBlob'                         
+  properties: {
+    category: 'AzureBlob'
+    target: blobStorageEndpoint
+    authType: 'ApiKey'
+    isSharedToAll: true
+    credentials: {
+      key: '${listKeys(storageAccountResourceId, '2023-01-01').keys[0].value}'
+    }
+    metadata: {
+      ApiType: 'Azure'
+      ContainerName:blobContainerName
+      AccountName:storageAccountName
+    }
+  }
+}
+
+output aiHubResourceId string = aiHub.id

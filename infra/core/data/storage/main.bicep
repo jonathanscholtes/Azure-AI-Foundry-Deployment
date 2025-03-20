@@ -3,7 +3,7 @@ param location string
 param identityName string
 param vnetId string
 
-module storageAccount 'blob-storage-account.bicep' ={
+module storageAccount 'modules/blob-storage-account.bicep' ={
   name: 'storageAccount'
   params:{
      location: location
@@ -13,7 +13,7 @@ module storageAccount 'blob-storage-account.bicep' ={
   }
 }
 
-module storageContainers 'blob-storage-containers.bicep' = {
+module storageContainers 'modules/blob-storage-containers.bicep' = {
   name: 'storageContainers'
   params: {
     storageAccountName: storageAccountName
@@ -21,7 +21,7 @@ module storageContainers 'blob-storage-containers.bicep' = {
   dependsOn:[storageAccount]
 }
 
-module storageRoles 'blob-storage-roles.bicep' = {
+module storageRoles 'modules/blob-storage-roles.bicep' = {
   name: 'storageRoles'
   params:{
     identityName:identityName
@@ -30,7 +30,7 @@ module storageRoles 'blob-storage-roles.bicep' = {
   dependsOn:[storageAccount]
 }
 
-module storagePe 'blob-storage-pe.bicep' = { 
+module storagePe 'modules/blob-storage-pe.bicep' = { 
   name: 'storagePe'
   params: { 
     location:location

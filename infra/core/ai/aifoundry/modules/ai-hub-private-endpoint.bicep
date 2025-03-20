@@ -1,17 +1,22 @@
+@description('Name of the Azure AI Hub workspace')
 param aiHubName string
+
+@description('Azure region of the deployment')
 param location string
+
+@description('Resource ID of the virtual network')
 param vnetId string
+
+@description('Name of the subnet for the private endpoint')
 param subnetName string
 
-var privateEndpointName = '${aiHubName}-pe'
+var privateEndpointName = '${aiHubName}-private-endpoint'
 var privateDnsZoneName = 'privatelink.api.azureml.ms'
 var privateDnsZoneName2 = 'privatelink.notebooks.azure.net'
 var pvtEndpointDnsGroupName = '${privateEndpointName}/default'
 
-
 resource aiHub 'Microsoft.MachineLearningServices/workspaces@2023-08-01-preview' existing = {
   name: aiHubName
-
 }
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
@@ -26,10 +31,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         name: 'workspace'
         properties: {
           privateLinkServiceId: aiHub.id
-          groupIds: [
-            'amlworkspace'
-          ]
-          
+          groupIds: ['amlworkspace']
         }
       }
     ]
@@ -38,7 +40,6 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
     aiHub
   ]
 }
-
 
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: privateDnsZoneName
@@ -60,7 +61,6 @@ resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
     }
   }
 }
-
 
 resource privateDnsZone2 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: privateDnsZoneName2

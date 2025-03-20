@@ -55,7 +55,7 @@ To explore model deployment options, including serverless models, fine-tuning, a
 
 
 ### **AI Foundry Deployment**  
-📁 [infra/core/ai/aiservices](infra/core/ai/aiservices)  
+📁 [infra/core/ai/aifoundry](infra/core/ai/aifoundry)  
 
 This module handles the deployment of **Azure AI Foundry**, enabling a scalable and secure infrastructure for AI workloads. It provisions the necessary **AI Hub**, **AI Projects**, and **AI Services** to support model inference, data processing, and RAG applications.  
 

@@ -27,8 +27,8 @@ module search 'search/main.bicep' = {
   }
 }
 
-module aiServices 'aiservices/main.bicep' = {
-  name: 'ai-services'
+module aifoundry 'aifoundry/main.bicep' = {
+  name: 'aifoundry'
   params: { 
     location:location
     environmentName: environmentName
@@ -50,6 +50,6 @@ module aiServices 'aiservices/main.bicep' = {
 
 
 
-output aiservicesTarget string = aiServices.outputs.aiservicesTarget
-output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint
+output aiservicesTarget string = aifoundry.outputs.aiservicesTarget
+output OpenAIEndPoint string = aifoundry.outputs.OpenAIEndPoint
 output searchServiceEndpoint string = search.outputs.searchServiceEndpoint

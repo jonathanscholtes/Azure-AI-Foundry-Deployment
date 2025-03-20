@@ -4,7 +4,7 @@ param location string
 param vnetId string
 param subnetName string
 
-module search_service 'search-service.bicep' = { 
+module search_service 'modules/search-service.bicep' = { 
  name: 'search_service'
  params: { 
    name: searchServicename
@@ -21,7 +21,7 @@ module search_service 'search-service.bicep' = {
  }
 }
 
-module search_roles 'search-roles.bicep' = { 
+module search_roles 'modules/search-roles.bicep' = { 
   name: 'search_roles'
   params: { 
     identityName: identityName
@@ -30,7 +30,7 @@ module search_roles 'search-roles.bicep' = {
   dependsOn:[search_service]
 }
 
-module searchPE 'search-private-endpoint.bicep' = { 
+module searchPE 'modules/search-private-endpoint.bicep' = { 
   name: 'searchPE'
   params: { 
     vnetId:vnetId
