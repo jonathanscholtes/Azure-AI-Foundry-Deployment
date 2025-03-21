@@ -142,8 +142,8 @@ This module implements **end-to-end observability** by configuring logging, moni
 Start by cloning the repository to your local machine using the following command:
 
 ```bash
-git clone https://github.com/jonathanscholtes/azure-ai-search-large-doc-indexing-vectorization.git
-cd azure-ai-search-large-doc-indexing-vectorization
+git clone https://github.com/jonathanscholtes/Azure-AI-Foundry-Deployment.git
+cd Azure-AI-Foundry-Deployment
 ```
 
 
@@ -199,24 +199,24 @@ To chat with the vector data stored in **Azure AI Search** using the Playground,
 1. **Add Data Source – Azure AI Search Index**
 In the Playground, click on **`+ Add a new data source`**.  
    ![add data source](./media/add_data_source.png)
-<br>
+
 2. **Select AI Search Source Location**
 Choose **Azure AI Search** as the data source.  
-   ![source location](./media/vector_index_source_location.png)
-<br>
+  ![source location](./media/vector_index_source_location.png)
+
 3. **Select AI Search Source Index**
 Select the deployed instance of **Azure AI Search** associated with this solution, and choose the index named `_contract-index_`.  
    ![source index](./media/vector_index_source_index.png)
-<br>
+
 4. **Select AI Search Settings**
 To perform a vector search, specify the text embedding mode.  
    - Select the mode `_text-embedding_`, which is deployed to **Azure AI Foundry** with this solution.  
    ![search setting](./media/vector_index_search_setting.png)
-<br>
+
 5. **Select AI Search Index Settings**
 Keep the default settings and proceed to the **Review and Finish** step.  
    ![index setting](./media/vector_index_settings.png)
-<br>
+
 6. **Chat with Azure AI Search Vector Indexes**
 With the new data source added, you can now chat with the vector data using the Playground.  
 For example, if you uploaded data related to rocket propulsion, you can ask:  
