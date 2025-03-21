@@ -11,26 +11,28 @@ This project implements the **Azure AI Baseline Reference Architecture** to depl
 - **GPT-4o** for natural language generation  
 - **Phi-4** open mulit-model deployed as serverless api  
 
-The solution automates the deployment of **Azure AI Foundry** services, including hubs, projects, and networking components, using **PowerShell** and **Bicep** templates. It also integrates observability through **Log Analytics** and **Application Insights** for monitoring and diagnostics.  
 
+The solution automates the deployment of **Azure AI Foundry**, including AI Hubs, AI Projects, and networking components, using **PowerShell** and **Bicep** templates. It incorporates observability through **Log Analytics**  and **Application Insights** for real-time monitoring and diagnostics. Additionally, it integrates **Azure Functions** with Blob Triggers for event-driven processing of JSON documents, chunking document text, extracing meta data, generating vector embeddings with the Ada-002 model, and indexing  into **Azure AI Search** to enable retrieval-augmented generation (RAG) and semantic search that will be tested using the PlayGround.
 
 #### Key Features  
 
 - **Azure AI Foundry Deployment:**  
-  - Deploys **AI Hub**, **AI Project**, and **AI Services** for model hosting and generative AI solutions.  
-  - Uses **private endpoints** and **managed identities** for secure access.  
+  - Deploys **AI Hub**, **AI Project**, and **AI Services** for model hosting with secure access via **private endpoints** and **managed identities**.  
 
 - **Networking and Security:**  
-  - Creates a **VNet** with subnets and a **VPN Gateway** for remote access.  
-  - Securlty route and manage traffic with **private endpoints**.  
+  - Creates a **VNet** with subnets, a **VPN Gateway** for remote access, and **private endpoints** for secure communication.  
 
 - **Model Integration:**  
-  - Supports **chat over data** with **GPT-4o** and **Phi-4**.  
-  - Enables **vector search** and **RAG** with **Azure AI Search**.  
+  - Enables **chat over data** with **GPT-4o** and **Phi-4**.  
+  - Supports **vector search** and **RAG** with **Azure AI Search**.  
+  - Generates **Ada-002** vector embeddings from JSON documents.  
+
+- **Vector Processing Pipeline:**  
+  - Uses **Azure Blob Storage** triggers to process new JSON files with **Azure Functions**.  
+  - Extracts content, generates **Ada-002** embeddings, and indexes them in **Azure AI Search** for semantic retrieval and **RAG**.  
 
 - **Infrastructure as Code:**  
-  - Uses **Bicep** and **PowerShell** for automated deployment.  
-  - Ensures modular, reusable templates.  
+  - Automates deployment with **Bicep** and **PowerShell** using modular, reusable templates.
 
 
 ## 📦 Resources  
@@ -47,7 +49,7 @@ To explore model deployment options, including serverless models, fine-tuning, a
 🔗 [Deploy models as serverless APIs](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/deploy-models-serverless)  
 
 
-
+![design](./media/design.png)
 
 
 ## ⚙️ Key Components  
@@ -189,30 +191,37 @@ Follow these steps to add your client IP address to the firewall settings:
 
 Upload the JSON documents from the [data](data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
 
+
 #### 3. Add Vector Index to Azure AI Foundry
 
-In-order to use the Playground to chat over the vector data storaed in Azure AI Search, we will have to add our Azure AI Search index as a data soruce.
+To chat with the vector data stored in **Azure AI Search** using the Playground, you need to add your Azure AI Search index as a data source.
 
-**Add Azure AI Search Index**
-
-
-**Select AI Search Source Location**
-Select **Azure AI Search** as the data source:
-![source location](./media/vector_index_source_location.png)
-
-**Select AI Search Source Index**
-Then select the instance of **Azure AI Search** that has been deployed as a connection with this solution and select the index _contract-index_:
-
-![source location](./media/vector_index_source_index.png)
-
-**Select AI Search Settings**
-In-order to perform a vector search we will need to specify a text embedding mode, select the mode _text-embedding_ that is deployed to **Azure AI Foundry** with this solution: 
-![source location](./media/vector_index_search_setting.png)
-
-**Select AI Search Index Settings**
-Finaly keep the defaults before processed to the review and finish step:
-![source location](./media/vector_index_settings.png)
-
+1. **Add Data Source – Azure AI Search Index**
+In the Playground, click on **`+ Add a new data source`**.  
+   ![add data source](./media/add_data_source.png)
+<br>
+2. **Select AI Search Source Location**
+Choose **Azure AI Search** as the data source.  
+   ![source location](./media/vector_index_source_location.png)
+<br>
+3. **Select AI Search Source Index**
+Select the deployed instance of **Azure AI Search** associated with this solution, and choose the index named `_contract-index_`.  
+   ![source index](./media/vector_index_source_index.png)
+<br>
+4. **Select AI Search Settings**
+To perform a vector search, specify the text embedding mode.  
+   - Select the mode `_text-embedding_`, which is deployed to **Azure AI Foundry** with this solution.  
+   ![search setting](./media/vector_index_search_setting.png)
+<br>
+5. **Select AI Search Index Settings**
+Keep the default settings and proceed to the **Review and Finish** step.  
+   ![index setting](./media/vector_index_settings.png)
+<br>
+6. **Chat with Azure AI Search Vector Indexes**
+With the new data source added, you can now chat with the vector data using the Playground.  
+For example, if you uploaded data related to rocket propulsion, you can ask:  
+**"What is supersonic combustion?"**  
+   ![chat over data](./media/chat_playground.png)
 
 ---
 
