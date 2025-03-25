@@ -68,6 +68,9 @@ Follow these key steps to successfully deploy Azure AI Foundry:
 ### 3️⃣ [**Vector Processing Pipeline**](docs/vector-processing.md)
 -  Guide for processing and indexing documents into Azure AI Search for vector search with Azure AI Foundry.  
 
+### 4️⃣ [**Validate Online Endpoint**](docs/online-endpoints.md)  
+- Instructions for validating the deployment and connectivity of the Hugging Face model hosted on an online endpoint.  
+
 ---
 
 ## ♻️ Clean-Up

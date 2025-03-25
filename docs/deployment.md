@@ -1,4 +1,4 @@
-## 🚀 Deployment: Azure AI Foundry and Dependencies
+## Deployment: Azure AI Foundry and Dependencies
 
 ### **Prerequisites**
 Ensure you have the following before deploying the solution:

@@ -1,4 +1,4 @@
-## ⚙️ Key IaC Components  
+##  IaC Components  
 
 ### **AI Foundry Deployment**  
 📁 [infra/core/ai/aifoundry](../infra/core/ai/aifoundry)  
