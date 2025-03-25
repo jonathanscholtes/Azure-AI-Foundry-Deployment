@@ -19,7 +19,11 @@ param deployVpnGateway bool = false
 
 param rootCertData string
 
-var resourceToken = uniqueString(environmentName,projectName,location,az.subscription().subscriptionId)
+@description('Timestamp for the deployment')
+param timestamp string
+
+
+var resourceToken = uniqueString(environmentName, projectName, location, az.subscription().subscriptionId, timestamp)
 var gatewayName = 'vgw-${projectName}-${environmentName}-${resourceToken}'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' = {

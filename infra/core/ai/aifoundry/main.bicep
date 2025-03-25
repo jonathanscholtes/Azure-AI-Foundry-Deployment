@@ -98,6 +98,17 @@ module aiModels 'modules/ai-models.bicep' = {
   dependsOn:[aiServices,aiProject]
 }
 
+module aiOnlineEndpoints 'modules/ai-online-endpoint.bicep' = {
+  name: 'aiOnlineEndpoints'
+  params: { 
+    aiProjectName:aiProjectName
+    location:location
+    managedIdentityName:identityName
+    onlineEndpointName: 'src-${projectName}-${environmentName}-${resourceToken}'
+  }
+  dependsOn:[aiProject]
+}
+
 
 output aiservicesTarget string = aiServices.outputs.aiservicesTarget
 output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint

@@ -156,3 +156,4 @@ resource aiStorageConnection 'Microsoft.MachineLearningServices/workspaces/conne
 }
 
 output aiHubResourceId string = aiHub.id
+output aiHubName string = aiHubName

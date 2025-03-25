@@ -10,6 +10,7 @@ $projectName = "foundry"
 $environmentName = "demo"
 $templateFile = "main.bicep"
 $deploymentName = "foundrydeploy-$Location"
+$timestamp = Get-Date -Format "yyyyMMddHHmmss"
 
 
 # Clear account context and configure Azure CLI settings
@@ -45,6 +46,7 @@ $deploymentOutput = az deployment sub create `
         location=$Location `
         deployVpnGateway=$($DeployVpnGateway.IsPresent) `
         rootCertData="$rootCertData" `
+        timestamp=$timestamp `
     --query "properties.outputs"
 
 
