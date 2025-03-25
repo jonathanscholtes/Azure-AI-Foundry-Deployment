@@ -1,7 +1,7 @@
 ## ⚙️ Key IaC Components  
 
 ### **AI Foundry Deployment**  
-📁 [infra/core/ai/aifoundry](infra/core/ai/aifoundry)  
+📁 [infra/core/ai/aifoundry](../infra/core/ai/aifoundry)  
 
 This module handles the deployment of **Azure AI Foundry**, enabling a scalable and secure infrastructure for AI workloads. It provisions the necessary **AI Hub**, **AI Projects**, and **AI Services** to support model inference, data processing, and RAG applications.  
 
@@ -26,7 +26,7 @@ This module handles the deployment of **Azure AI Foundry**, enabling a scalable 
 --- 
 
 ### **Networking and Security**  
-📁 [infra/core/networking](infra/core/networking)  
+📁 [infra/core/networking](../infra/core/networking)  
 
 This module defines the **network architecture**, ensuring secure and isolated communication between components. It includes **VNets**, **subnets**, and a **VPN Gateway** to establish remote connectivity.  
 
@@ -50,7 +50,7 @@ This module defines the **network architecture**, ensuring secure and isolated c
 --- 
 
 ### **Observability and Monitoring**  
-📁 [infra/core/monitor](infra/core/monitor)  
+📁 [infra/core/monitor](../infra/core/monitor)  
 
 This module implements **end-to-end observability** by configuring logging, monitoring, and diagnostics. It enables real-time visibility into the system’s performance, health, and security.  
 

@@ -14,7 +14,7 @@ Follow these steps to add your client IP address to the firewall settings:
 
 ### 2. Upload Documents for Indexing with Azure Function  
 
-Upload the JSON documents from the [data](data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
+Upload the JSON documents from the [data](../data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
 
 
 ### 3. Add Vector Index to Azure AI Foundry
