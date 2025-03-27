@@ -15,7 +15,7 @@ module search_service 'modules/search-service.bicep' = {
       aadOrApiKey: {
         aadAuthFailureMode: 'http403'
       }}
-    publicNetworkAccess: 'enabled'
+    publicNetworkAccess: 'disabled'
     vnetId:vnetId
     subnetName:subnetName
  }

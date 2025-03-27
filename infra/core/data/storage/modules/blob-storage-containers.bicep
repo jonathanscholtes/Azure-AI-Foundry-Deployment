@@ -28,6 +28,4 @@ resource workspaceContainer 'Microsoft.Storage/storageAccounts/blobServices/cont
 resource imagesContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-04-01' = {
   parent: blobServices
   name: 'images'
-  properties: {
-  publicAccess:'Blob'}
 }

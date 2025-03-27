@@ -25,7 +25,7 @@ resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   kind: 'AIServices'
   properties: {
     customSubDomainName: customSubdomain
-    publicNetworkAccess: 'Enabled'
+    publicNetworkAccess: 'Disabled'
     networkAcls: {
       defaultAction: 'Deny'
       virtualNetworkRules: [

@@ -12,8 +12,8 @@ resource storageAcct 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   kind: 'StorageV2'
   properties: {
     allowSharedKeyAccess: true
-    publicNetworkAccess: 'Enabled'
-    allowBlobPublicAccess: true
+    publicNetworkAccess: 'Disabled'
+    allowBlobPublicAccess: false
     networkAcls: {
       defaultAction: 'Deny'
       bypass: 'AzureServices'
