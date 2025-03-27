@@ -19,17 +19,22 @@ Verify that the online endpoint routes **100% of the traffic** to the deployed m
 
 ###  **Model Testing and Verification**  
 
-To confirm the endpoint is operational, execute a test inference request:  
+Since the endpoint is secured behind a **VNet**, it cannot be tested directly from the Azure AI Foundry portal.  
 
-1. Select **Test** in the Azure AI Studio interface.  
-2. Provide the following sample input payload:  
+![traffic](../media/oneline_endpoint_vnet_message.png)  
 
-```json
-{
-  "inputs": "Paris is the <mask> of France."
-}
+To validate the deployment, connect to the **VPN** and run the Python test script:  
+[**test/online-endpoint-test.py**](../test/online-endpoint-test.py)  
+
+Executing this script will produce the following output:  
+
+```bash
+b'[{"score":0.8638191223144531,"token":812,"token_str":" capital","sequence":"Paris is the capital of France."},
+{"score":0.055570363998413086,"token":1144,"token_str":" heart","sequence":"Paris is the heart of France."},
+{"score":0.02755085751414299,"token":1867,"token_str":" Capital","sequence":"Paris is the Capital of France."},
+{"score":0.015455810353159904,"token":1312,"token_str":" center","sequence":"Paris is the center of France."},
+{"score":0.003802788909524679,"token":343,"token_str":" city","sequence":"Paris is the city of France."}]'
 ```
 
-![testing](../media/online_endpoint_test.png)  
 
-✅ This test ensures the model is successfully deployed and capable of performing accurate inferences through the managed online endpoint.
+✅ This confirms that the model is successfully deployed and capable of performing accurate inferences through the **managed online endpoint**.

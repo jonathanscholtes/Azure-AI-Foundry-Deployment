@@ -62,10 +62,33 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
     keyVault: keyVaultResourceId
     applicationInsights: appInsightsResourceId
     storageAccount: storageAccountResourceId
-    systemDatastoresAuthMode: 'ManagedIdentity'
+    systemDatastoresAuthMode: 'AccessKey'
     provisionNetworkNow: true
+    publicNetworkAccess: 'Disabled'
     managedNetwork: {
       isolationMode: 'AllowInternetOutbound'
+      outboundRules: {      
+        PE_AI_Service: {
+          type: 'PrivateEndpoint'
+          destination: {
+            serviceResourceId: aiServicesResourceId
+            subresourceTarget: 'account'
+            sparkEnabled: false
+
+          }
+          category: 'UserDefined'
+        }
+        PE_AI_Search: {
+          type: 'PrivateEndpoint'
+          destination: {
+            serviceResourceId: aiSearchResourceId
+            subresourceTarget: 'searchService'
+            sparkEnabled: false
+
+          }
+          category: 'UserDefined'
+        }
+      }  
     }
     sharedPrivateLinkResources: [
       {
@@ -74,7 +97,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
           groupId: 'searchService'
           privateLinkResourceId: aiSearchResourceId
           requestMessage: 'Private link to Azure AI Search'
-          status: 'Approved'
+
         }
       }
       {
@@ -83,7 +106,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
           groupId: 'account'
           privateLinkResourceId: aiServicesResourceId
           requestMessage: 'Private link to Azure AI Services'
-          status: 'Approved'
+
         }
       }
       {
@@ -92,7 +115,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
           groupId: 'blob'
           privateLinkResourceId: storageAccountResourceId
           requestMessage: 'Private link to Storage Account'
-          status: 'Approved'
+
         }
       }
     ]

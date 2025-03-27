@@ -41,6 +41,7 @@ module networking 'core/networking/main.bicep' = {
     publicIpName: 'pip-${projectName}-${environmentName}-${resourceToken}'
     rootCertData:rootCertData
     deployVpnGateway:deployVpnGateway
+    dnsResolverName:'pdnsr-${projectName}-${environmentName}-${resourceToken}'
   }
 }
 

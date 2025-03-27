@@ -17,7 +17,7 @@ cd Azure-AI-Foundry-Deployment
 ```
 
 
-#### 2. Deploy the Solution  
+### 2. Deploy the Solution  
 Navigate to the infrastructure directory:
 
 ```bash
@@ -27,17 +27,23 @@ cd infra
 Run the following PowerShell command to deploy the solution. Replace the placeholders with your actual subscription name and Azure region. The `-DeployVpnGateway` flag is optional for deploying the Azure VPN Gateway:
 
 ```powershell
-.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2'
+.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -DeployVpnGateway
 ```
 
-✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **40 minutes** to complete.
+✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **60 minutes** to complete.
 
 
 
-#### 3. (Optional) Download the VPN Client  
+### 3. Download the VPN Client  
 
 
 Once the deployment is complete, follow these steps to download the VPN client:  
 - Go to the **Azure Portal** → **Virtual Network Gateway** → **Point-to-Site Configuration**.  
 - Click **Download VPN Client**.  
-- Install the client on your local machine to securely connect to the Azure environment.
+- Extract the file `vgw-foundry-demo-[random].zip`.
+- Then import the AzureVPN configuration file `azurevpnconfig.xml` with **Azure VPN Client**
+
+
+
+
+  

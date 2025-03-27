@@ -4,13 +4,14 @@ param gatewayName string
 param publicIpName string
 param rootCertData string
 param deployVpnGateway bool = false
-
+param dnsResolverName string
 
 module vNet 'vnet.bicep' = { 
   name: 'vNet'
   params: { 
      vnetLocation:location
      vnetName:vnetName
+     dnsResolverName:dnsResolverName
   }
 }
 
@@ -22,7 +23,7 @@ module vpnGateway 'vpn-gateway.bicep' = if (deployVpnGateway) {
     publicIpName: publicIpName
     gatewayName: gatewayName
     rootCertData:rootCertData
-
+    
   }
 }
 

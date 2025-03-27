@@ -1,3 +1,4 @@
 infra/scripts/certs/P2SClientCert.pfx
 infra/scripts/certs/P2SRootCert.cer
 infra/scripts/artifacts/loader/app.zip
+infra/core/networking/gateway

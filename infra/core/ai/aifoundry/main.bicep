@@ -70,7 +70,7 @@ module aihubPE 'modules/ai-hub-private-endpoint.bicep' = {
   params: { 
     aiHubName: 'hub-${projectName}-${environmentName}-${resourceToken}'
     location:location
-    subnetName:subnetName
+    subnetName:'servicesSubnet'
     vnetId:vnetId
   }
   dependsOn:[aiHub]

@@ -1,23 +1,15 @@
 
 ## Loading Index Data and Validating
 
-### 1. Configure Storage Account Access  
+To upload sample documents to the Azure Storage Account and enable embedding creation, you must connect to the VPN as described in the deployment steps.
 
-To upload sample documents into the Azure Storage Account and enable embedding creation, you must allow access by configuring the Storage Account firewall settings. This ensures that your local environment can communicate with Azure services.
 
-Follow these steps to add your client IP address to the firewall settings:
-
-1. Log in to the [Azure portal](https://portal.azure.com).
-2. Navigate to your **Storage Account**.
-3. In the **Networking** section, go to **Public network access** and select **Manage**.
-4. Add your current client IP address to the list of allowed addresses.
-
-### 2. Upload Documents for Indexing with Azure Function  
+###  Upload Documents for Indexing with Azure Function  
 
 Upload the JSON documents from the [data](../data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
 
 
-### 3. Add Vector Index to Azure AI Foundry
+###  Add Vector Index to Azure AI Foundry
 
 To chat with the vector data stored in **Azure AI Search** using the Playground, you need to add your Azure AI Search index as a data source.
 

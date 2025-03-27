@@ -5,10 +5,6 @@ param publicIpName string
 param gatewaySubnetName string = 'gatewaySubnet'
 param rootCertData string
 
-var tenantId = subscription().tenantId
-var audience = '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
-var tenant = uri(environment().authentication.loginEndpoint, tenantId)
-var issuer = 'https://sts.windows.net/${tenantId}/'
 
 
 
@@ -33,7 +29,9 @@ resource vnetGateway 'Microsoft.Network/virtualNetworkGateways@2023-05-01' = {
 
         name: 'vnetGatewayConfig'
         properties: {
+          privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
+            
             id: publicIP.id
           }
           subnet: {
@@ -41,26 +39,22 @@ resource vnetGateway 'Microsoft.Network/virtualNetworkGateways@2023-05-01' = {
           }
         }
       }
+
     ]
+    enablePrivateIpAddress: true 
+    activeActive: false    
+    enableBgp: true       
     gatewayType: 'Vpn'
     vpnType: 'RouteBased'
     sku: {
-      name: 'VpnGw1'
-      tier: 'VpnGw1'
+      name: 'VpnGw2'       
+      tier: 'VpnGw2'
     }
-    customRoutes: {
-      addressPrefixes: [
-        '10.0.1.0/24' // Web subnet
-        '10.0.2.0/24' // AI subnet
-        '10.0.3.0/24' // Data subnet
-        '10.0.4.0/24' // Services subnet
-        '168.63.129.16/32' // Azure DNS for private endpoints  
-      ]
-    }
+
     vpnClientConfiguration: {
       vpnClientAddressPool: {
         addressPrefixes: [
-          '192.168.100.0/24'
+          '172.16.33.0/24'
         ]
       }
     
@@ -77,6 +71,8 @@ resource vnetGateway 'Microsoft.Network/virtualNetworkGateways@2023-05-01' = {
         }
       ]
       
+      
     }
+   
   }
 }
