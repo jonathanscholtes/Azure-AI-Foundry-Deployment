@@ -62,7 +62,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
     keyVault: keyVaultResourceId
     applicationInsights: appInsightsResourceId
     storageAccount: storageAccountResourceId
-    systemDatastoresAuthMode: 'AccessKey'
+    systemDatastoresAuthMode: 'AccountKey'
     provisionNetworkNow: true
     publicNetworkAccess: 'Disabled'
     managedNetwork: {

@@ -3,6 +3,17 @@ param location string
 param identityName string
 param vnetId string
 
+
+var dnsZones = [
+  'privatelink.blob.core.windows.net'
+  'privatelink.file.core.windows.net'
+  'privatelink.queue.core.windows.net'
+  'privatelink.table.core.windows.net'
+]
+
+var endpointTypes = ['blob', 'file', 'queue', 'table']
+
+
 module storageAccount 'modules/blob-storage-account.bicep' ={
   name: 'storageAccount'
   params:{
@@ -30,16 +41,20 @@ module storageRoles 'modules/blob-storage-roles.bicep' = {
   dependsOn:[storageAccount]
 }
 
-module storagePe 'modules/blob-storage-pe.bicep' = { 
-  name: 'storagePe'
-  params: { 
-    location:location
+// Loop through all endpoint types
+module privateEndpoints 'modules/storage-private-endpoint.bicep' = [for endpoint in endpointTypes: {
+  name: '${storageAccountName}-${endpoint}-pe'
+  params: {
+    storageAccountId: storageAccount.outputs.storageAccountId
     storageAccountName: storageAccountName
-    subnetName:'servicesSubnet'
-      vnetId: vnetId
+    location: location
+    vnetId: vnetId
+    subnetName: 'servicesSubnet'
+    endpointType: endpoint
+    dnsZoneName: dnsZones[indexOf(endpointTypes, endpoint)]
   }
-  dependsOn:[storageAccount]
-}
+}]
+
 
 output storageAccountBlobEndPoint string = storageAccount.outputs.storageAccountBlobEndPoint
 output storageAccountId string = storageAccount.outputs.storageAccountId

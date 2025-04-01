@@ -45,6 +45,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     virtualNetworkSubnetId: '${vnetId}/subnets/${subnetName}'
+    vnetRouteAllEnabled: true
     siteConfig: {
       appSettings: [
         {

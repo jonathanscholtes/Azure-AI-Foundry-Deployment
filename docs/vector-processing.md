@@ -8,6 +8,8 @@ To upload sample documents to the Azure Storage Account and enable embedding cre
 
 Upload the JSON documents from the [data](../data) directory to the **load** container in the Azure Storage Account. This upload will trigger the document processing function, which will chunk and index the documents into Azure AI Search. 
 
+![storage load](../media/storage_cntrainer_data_load.png)
+
 
 ###  Add Vector Index to Azure AI Foundry
 
