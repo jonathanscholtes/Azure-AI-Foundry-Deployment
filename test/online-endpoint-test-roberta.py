@@ -13,7 +13,7 @@ data = {
 body = str.encode(json.dumps(data))
 
 # Replace this with the Endpoint Target URI
-url = 'https://src-foundry-demo-[random].eastus2.inference.ml.azure.com/score'
+url = 'https://roberta-demo-[random].eastus2.inference.ml.azure.com/score'
 
 # Replace this with the primary/secondary key, AMLToken, or Microsoft Entra ID token for the endpoint
 api_key = ''

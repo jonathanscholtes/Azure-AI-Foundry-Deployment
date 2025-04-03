@@ -13,6 +13,8 @@ param aiHubDescription string
 @description('Resource ID of the Key Vault for storing connection strings')
 param keyVaultResourceId string
 
+param containerRegistryID string
+
 @description('Resource ID of the Azure AI Services instance')
 param aiServicesResourceId string
 
@@ -60,6 +62,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
     friendlyName: aiHubFriendlyName
     description: aiHubDescription
     keyVault: keyVaultResourceId
+    containerRegistry: containerRegistryID
     applicationInsights: appInsightsResourceId
     storageAccount: storageAccountResourceId
     systemDatastoresAuthMode: 'AccountKey'

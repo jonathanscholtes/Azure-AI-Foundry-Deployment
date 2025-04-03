@@ -16,6 +16,16 @@ param storageAccountName string
 param keyVaultId string
 
 
+module registry 'registry/main.bicep' = {
+  name: 'registry'
+  params: {
+    containerRegistryName: 'cr${projectName}${environmentName}${resourceToken}'
+     location:location
+     vnetId:vnetId
+  }
+
+}
+
 module search 'search/main.bicep' = { 
   name: 'search'
   params: {
@@ -44,6 +54,7 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountId:storageAccountId
     storageAccountTarget:storageAccountTarget
     storageAccountName:storageAccountName
+    containerRegistryID: registry.outputs.containerRegistryID
   }
 
 }

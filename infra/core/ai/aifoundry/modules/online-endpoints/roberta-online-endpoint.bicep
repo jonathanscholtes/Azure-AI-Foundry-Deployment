@@ -25,7 +25,7 @@ resource aiProject 'Microsoft.MachineLearningServices/workspaces@2023-08-01-prev
 // Online Endpoint Definition
 resource onlineEndpoint 'Microsoft.MachineLearningServices/workspaces/onlineEndpoints@2025-01-01-preview' = {
   parent: aiProject 
-  name: onlineEndpointName  
+  name: onlineEndpointName
   location: location
   identity: {
     type: 'UserAssigned'
@@ -42,7 +42,7 @@ resource onlineEndpoint 'Microsoft.MachineLearningServices/workspaces/onlineEndp
 // Model Deployment Definition
 resource modelDeployment 'Microsoft.MachineLearningServices/workspaces/onlineEndpoints/deployments@2025-01-01-preview' = {
   parent: onlineEndpoint  
-  name: 'roberta-base-deployment'
+  name: 'roberta-base'
   location: location
   properties: {
     model:'azureml://registries/HuggingFace/models/roberta-base/versions/24'  
@@ -58,3 +58,4 @@ resource modelDeployment 'Microsoft.MachineLearningServices/workspaces/onlineEnd
     capacity: 1
 }
 }
+

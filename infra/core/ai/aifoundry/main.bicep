@@ -18,6 +18,8 @@ param storageAccountName string
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
+param containerRegistryID string
+
 var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
 var aiProjectName  = 'prj-${projectName}-${environmentName}-${resourceToken}'
 
@@ -62,6 +64,7 @@ module aiHub 'modules/ai-hub.bicep' = {
     blobStorageEndpoint:storageAccountTarget
     storageAccountName:storageAccountName
     blobContainerName:'workspace'
+    containerRegistryID:containerRegistryID
   }
 }
 
@@ -98,13 +101,14 @@ module aiModels 'modules/ai-models.bicep' = {
   dependsOn:[aiServices,aiProject]
 }
 
-module aiOnlineEndpoints 'modules/ai-online-endpoint.bicep' = {
+module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = {
   name: 'aiOnlineEndpoints'
   params: { 
     aiProjectName:aiProjectName
     location:location
-    managedIdentityName:identityName
-    onlineEndpointName: 'src-${projectName}-${environmentName}-${resourceToken}'
+    identityName:identityName
+    environmentName:environmentName
+    resourceToken:resourceToken
   }
   dependsOn:[aiProject]
 }

@@ -104,7 +104,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
         properties: {
           addressPrefix: '10.0.6.0/24'
           privateEndpointNetworkPolicies: 'Disabled'
-          privateLinkServiceNetworkPolicies: 'Disabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
         }
          type: 'Microsoft.Network/virtualNetworks/subnets'
       }
