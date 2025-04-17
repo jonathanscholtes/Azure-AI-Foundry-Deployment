@@ -50,6 +50,14 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
               service: 'Microsoft.CognitiveServices'              
             }
           ]
+          delegations: [
+            {
+              name: 'Microsoft.app/environments'
+              properties: {
+                serviceName: 'Microsoft.App/environments'
+              }
+            }
+          ]
         }
         type: 'Microsoft.Network/virtualNetworks/subnets'
       }

@@ -22,6 +22,8 @@ param rootCertData string
 @description('Timestamp for the deployment')
 param timestamp string
 
+@description('Target deletion timestamp in RFC1123 format')
+param targetAutoDeletionTime string
 
 var resourceToken = uniqueString(environmentName, projectName, location, az.subscription().subscriptionId, timestamp)
 var gatewayName = 'vgw-${projectName}-${environmentName}-${resourceToken}'
@@ -96,6 +98,7 @@ module azureai 'core/ai/main.bicep' = {
     storageAccountId:data.outputs.storageAccountId
     storageAccountTarget: data.outputs.storageAccountBlobEndPoint
     storageAccountName:data.outputs.storageAccountName
+    targetAutoDeletionTime:targetAutoDeletionTime
   }
 
 }

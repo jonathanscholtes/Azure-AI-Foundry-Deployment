@@ -13,6 +13,8 @@ $deploymentName = "foundrydeploy-$Location"
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
 
 
+$targetAutoDeletionTime = (Get-Date).ToUniversalTime().AddDays(7).ToString("R")
+
 # Clear account context and configure Azure CLI settings
 az account clear
 az config set core.enable_broker_on_windows=false
@@ -47,6 +49,7 @@ $deploymentOutput = az deployment sub create `
         deployVpnGateway=$($DeployVpnGateway.IsPresent) `
         rootCertData="$rootCertData" `
         timestamp=$timestamp `
+        targetAutoDeletionTime=$targetAutoDeletionTime `
     --query "properties.outputs"
 
 

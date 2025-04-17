@@ -8,6 +8,9 @@ param location string
 @description('Name of the user-assigned managed identity')
 param managedIdentityName string
 
+@description('Target deletion timestamp in RFC1123 format')
+param targetAutoDeletionTime string
+
 param onlineEndpointName string
 
 // Existing Managed Identity Reference
@@ -37,7 +40,7 @@ resource phiOnlineEndpoint 'Microsoft.MachineLearningServices/workspaces/onlineE
   properties: {
     properties:{
       SharedComputeCapacityEnabled: 'true'
-      TargetAutoDeletionTime: 'Wed, 09 Apr 2025 21:44:13 GMT'
+      TargetAutoDeletionTime: targetAutoDeletionTime
   }
     authMode: 'Key'
   }

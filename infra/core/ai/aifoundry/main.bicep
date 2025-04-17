@@ -18,6 +18,9 @@ param storageAccountName string
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
+@description('Target deletion timestamp in RFC1123 format')
+param targetAutoDeletionTime string
+
 param containerRegistryID string
 
 var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
@@ -101,6 +104,20 @@ module aiModels 'modules/ai-models.bicep' = {
   dependsOn:[aiServices,aiProject]
 }
 
+
+//module addCapabilityHost 'modules/add-capability-host.bicep' = {
+//  name: 'addCapabilityHost'
+//  params: {
+//    capabilityHostName: '${environmentName}-${resourceToken}'
+//    aiHubName: aiHub.outputs.aiHubName
+//    aiProjectName: aiProjectName
+//    aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
+//    aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
+//
+//  }
+//
+//}
+
 module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = {
   name: 'aiOnlineEndpoints'
   params: { 
@@ -109,6 +126,7 @@ module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = {
     identityName:identityName
     environmentName:environmentName
     resourceToken:resourceToken
+    targetAutoDeletionTime:targetAutoDeletionTime
   }
   dependsOn:[aiProject]
 }

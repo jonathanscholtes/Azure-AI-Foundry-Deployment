@@ -49,6 +49,9 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
   name: managedIdentityName
 }
 
+var aiServicesConnectionName = '${aiHubName}-connection-AI-Services'
+var aiSearchConnectionName = '${aiHubName}-connection-AzureAISearch'
+
 resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview' = {
   name: aiHubName
   location: location
@@ -128,7 +131,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
 
 resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
   parent: aiHub
-  name: '${aiHubName}-connection-AI-Services'
+  name: aiServicesConnectionName
   properties: {
     category: 'AzureOpenAI'
     target: aiServicesEndpoint
@@ -146,7 +149,7 @@ resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/conn
 
 resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
   parent: aiHub
-  name: '${aiHubName}-connection-AzureAISearch'
+  name: aiSearchConnectionName
   properties: {
     category: 'CognitiveSearch'
     target: aiSearchEndpoint
@@ -183,3 +186,5 @@ resource aiStorageConnection 'Microsoft.MachineLearningServices/workspaces/conne
 
 output aiHubResourceId string = aiHub.id
 output aiHubName string = aiHubName
+output aiSearchConnectionName string = aiSearchConnectionName
+output aiServicesConnectionName string = aiServicesConnectionName

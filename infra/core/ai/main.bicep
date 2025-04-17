@@ -12,6 +12,9 @@ param storageAccountTarget string
 param storageAccountName string
 
 
+@description('Target deletion timestamp in RFC1123 format')
+param targetAutoDeletionTime string
+
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
@@ -55,6 +58,7 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountTarget:storageAccountTarget
     storageAccountName:storageAccountName
     containerRegistryID: registry.outputs.containerRegistryID
+    targetAutoDeletionTime:targetAutoDeletionTime
   }
 
 }
