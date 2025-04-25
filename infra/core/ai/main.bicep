@@ -10,6 +10,7 @@ param applicationInsightsId string
 param storageAccountId string
 param storageAccountTarget string
 param storageAccountName string
+param agentSubnetId string
 
 
 @description('Target deletion timestamp in RFC1123 format')
@@ -59,6 +60,7 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountName:storageAccountName
     containerRegistryID: registry.outputs.containerRegistryID
     targetAutoDeletionTime:targetAutoDeletionTime
+    agentSubnetId:agentSubnetId
   }
 
 }

@@ -12,6 +12,7 @@ param searchServiceId string
 param storageAccountId string
 param storageAccountTarget string
 param storageAccountName string
+param agentSubnetId string
 
 
 
@@ -105,18 +106,18 @@ module aiModels 'modules/ai-models.bicep' = {
 }
 
 
-//module addCapabilityHost 'modules/add-capability-host.bicep' = {
-//  name: 'addCapabilityHost'
-//  params: {
-//    capabilityHostName: '${environmentName}-${resourceToken}'
-//    aiHubName: aiHub.outputs.aiHubName
-//    aiProjectName: aiProjectName
-//    aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
-//    aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
-//
-//  }
-//
-//}
+module addCapabilityHost 'modules/add-capability-host.bicep' = {
+  name: 'addCapabilityHost'
+  params: {
+    capabilityHostName: '${environmentName}-${resourceToken}'
+    aiHubName: aiHub.outputs.aiHubName
+    aiProjectName: aiProjectName
+    aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
+    aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
+    customerSubnetId: agentSubnetId
+  }
+
+}
 
 module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = {
   name: 'aiOnlineEndpoints'

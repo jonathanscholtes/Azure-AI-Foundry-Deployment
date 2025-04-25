@@ -99,6 +99,7 @@ module azureai 'core/ai/main.bicep' = {
     storageAccountTarget: data.outputs.storageAccountBlobEndPoint
     storageAccountName:data.outputs.storageAccountName
     targetAutoDeletionTime:targetAutoDeletionTime
+    agentSubnetId: networking.outputs.agentSubnetId
   }
 
 }

@@ -28,3 +28,4 @@ module vpnGateway 'vpn-gateway.bicep' = if (deployVpnGateway) {
 }
 
 output vnetId string = vNet.outputs.vnetId
+output agentSubnetId string = vNet.outputs.agentSubnetId
