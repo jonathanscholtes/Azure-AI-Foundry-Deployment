@@ -3,17 +3,21 @@ param location string
 param vnetId string
 
 
+@description('The name of the user-assigned managed identity used by the container app.')
+param managedIdentityName string
 
-module containerregistry 'container-registry.bicep' = {
+module containerregistry 'registry/container-registry.bicep' = {
   name: 'containerregistry'
   params: {
     containerRegistryName: containerRegistryName
     location: location
+    managedIdentityName:managedIdentityName
+
   }
 
 }
 
-module containerPe 'container-registry-pe.bicep' = {
+module containerPe 'registry/container-registry-pe.bicep' = {
   name: 'containerPe'
   params: { 
  containerRegistryName:containerRegistryName
@@ -25,5 +29,6 @@ module containerPe 'container-registry-pe.bicep' = {
 dependsOn:[containerregistry]
 }
 
+
 output containerRegistryID string = containerregistry.outputs.containerRegistryID
-output containerRegistryName string = containerRegistryName
+output containerRegistryName string = containerregistry.outputs.containerRegistryName

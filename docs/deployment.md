@@ -18,11 +18,6 @@ cd Azure-AI-Foundry-Deployment
 
 
 ### 2. Deploy the Solution  
-Navigate to the infrastructure directory:
-
-```bash
-cd infra
-```
 
 Run the following PowerShell command to deploy the solution. Replace the placeholders with your actual subscription name and Azure region. The `-DeployVpnGateway` flag is optional for deploying the Azure VPN Gateway:
 

@@ -56,10 +56,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
   name: aiHubName
   location: location
   identity: {
-    type: 'SystemAssigned, UserAssigned'
-    userAssignedIdentities: {
-      '${managedIdentity.id}': {}
-    }
+    type: 'SystemAssigned'
   }
   properties: {
     friendlyName: aiHubFriendlyName
@@ -79,7 +76,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
           destination: {
             serviceResourceId: aiServicesResourceId
             subresourceTarget: 'account'
-            sparkEnabled: false
+            sparkEnabled: true
 
           }
           category: 'UserDefined'
@@ -89,14 +86,14 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
           destination: {
             serviceResourceId: aiSearchResourceId
             subresourceTarget: 'searchService'
-            sparkEnabled: false
+            sparkEnabled: true
 
           }
           category: 'UserDefined'
         }
-      }  
+      }
     }
-    sharedPrivateLinkResources: [
+     sharedPrivateLinkResources: [
       {
         name: 'aiSearch-private-link'
         properties: {
@@ -116,9 +113,18 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
         }
       }
       {
-        name: 'storage-private-link'
+        name: 'storage-blob-private-link'
         properties: {
           groupId: 'blob'
+          privateLinkResourceId: storageAccountResourceId
+          requestMessage: 'Private link to Storage Account'
+
+        }
+      }
+      {
+        name: 'storage-file-private-link'
+        properties: {
+          groupId: 'file'
           privateLinkResourceId: storageAccountResourceId
           requestMessage: 'Private link to Storage Account'
 

@@ -10,7 +10,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
   name: identityName
 }
 
-resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
+resource aiServices 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   name: aiServicesName
   location: location
   identity: {
@@ -28,15 +28,14 @@ resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
     publicNetworkAccess: 'Disabled'
     networkAcls: {
       defaultAction: 'Deny'
+      bypass: 'AzureServices'
       virtualNetworkRules: [
         {
           id: '${vnetId}/subnets/${subnetName}'
         }
       ]
     }
-    apiProperties: {
-      statisticsEnabled: false
-    }
+    
   }
 }
 

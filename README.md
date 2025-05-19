@@ -44,7 +44,7 @@ This project builds on the Azure AI Baseline Reference Architecture to help you 
 🔗 [Azure AI Baseline Reference Architecture](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/architecture/baseline-openai-e2e-chat)  
 
 Please review the **quickstart** templates that demonstrates how to set up Azure AI Foundry with a network-restricted configuration.
-🔗 [Azure AI Foundry Template - Network Restricted ](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.machinelearningservices/machine-learning-network-restricted)  
+🔗 [Azure AI Foundry Template - Network Restricted ](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.machinelearningservices/aifoundry-network-restricted)  
 
 **AI Model Deployment in Azure AI Foundry**  
 To explore model deployment options, including serverless models, fine-tuning, and inference endpoints, refer to the official documentation.  

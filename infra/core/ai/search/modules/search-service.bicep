@@ -43,7 +43,7 @@ var searchIdentityProvider = (sku.name == 'free') ? null : {
 }
 
 
-resource search 'Microsoft.Search/searchServices@2021-04-01-preview' = {
+resource search 'Microsoft.Search/searchServices@2025-02-01-preview' = {
   name: name
   location: location
   // The free tier does not support managed identity
@@ -56,13 +56,8 @@ resource search 'Microsoft.Search/searchServices@2021-04-01-preview' = {
     hostingMode: hostingMode
     networkRuleSet: {
       ipRules: []
-      virtualNetworkRules: [
-        {
-          id: '${vnetId}/subnets/${subnetName}'  // Add VNet and subnet
-          action: 'Allow'
-        }
-      ]
-      defaultAction: 'Deny'  // Deny public access by default
+      bypass: 'AzureServices'
+
     }
     partitionCount: partitionCount
     publicNetworkAccess: publicNetworkAccess

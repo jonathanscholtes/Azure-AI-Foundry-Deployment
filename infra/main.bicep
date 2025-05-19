@@ -80,6 +80,17 @@ module data 'core/data/main.bicep' = {
   }
 }
 
+module platform 'core/platform/main.bicep' = { 
+  name: 'platform'
+  scope: resourceGroup
+  params: { 
+    containerRegistryName: 'cr${projectName}${environmentName}${resourceToken}'
+    location:location
+    vnetId: networking.outputs.vnetId
+    managedIdentityName: security.outputs.managedIdentityName
+
+  }
+}
 
 module azureai 'core/ai/main.bicep' = {
   name: 'azure-ai'
@@ -100,6 +111,7 @@ module azureai 'core/ai/main.bicep' = {
     storageAccountName:data.outputs.storageAccountName
     targetAutoDeletionTime:targetAutoDeletionTime
     agentSubnetId: networking.outputs.agentSubnetId
+    containerRegistryID: platform.outputs.containerRegistryID
   }
 
 }

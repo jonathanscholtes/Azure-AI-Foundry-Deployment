@@ -1,4 +1,11 @@
-infra/scripts/certs/P2SClientCert.pfx
-infra/scripts/certs/P2SRootCert.cer
-infra/scripts/artifacts/loader/app.zip
+*.pfx
+*.cer
 infra/core/networking/gateway
+test/endpoint_test.py
+env
+.venv
+venv/
+Test/
+*.zip
+__pycache__/
+certs/

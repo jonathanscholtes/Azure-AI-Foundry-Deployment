@@ -35,7 +35,7 @@ resource onlineEndpoint 'Microsoft.MachineLearningServices/workspaces/onlineEndp
   }
   properties: {
     authMode: 'Key'
-   
+    publicNetworkAccess: 'Disabled'
   }
 }
 

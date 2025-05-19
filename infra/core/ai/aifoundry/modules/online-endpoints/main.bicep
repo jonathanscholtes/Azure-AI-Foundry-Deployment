@@ -11,7 +11,7 @@ param identityName string
 param targetAutoDeletionTime string
 
 
-module phiOnlineEndpoint 'phi-online-endpoint.bicep' = {
+/*module phiOnlineEndpoint 'phi-online-endpoint.bicep' = {
   name: 'phiOnlineEndpoint'
   params: { 
     aiProjectName: aiProjectName
@@ -21,7 +21,7 @@ module phiOnlineEndpoint 'phi-online-endpoint.bicep' = {
     targetAutoDeletionTime:targetAutoDeletionTime
   }
 
-}
+}*/
 
 module robertaOnlineEndpoint 'roberta-online-endpoint.bicep' = {
   name: 'robertaOnlineEndpoint'

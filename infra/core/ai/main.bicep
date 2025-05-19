@@ -11,7 +11,7 @@ param storageAccountId string
 param storageAccountTarget string
 param storageAccountName string
 param agentSubnetId string
-
+param containerRegistryID string
 
 @description('Target deletion timestamp in RFC1123 format')
 param targetAutoDeletionTime string
@@ -19,16 +19,6 @@ param targetAutoDeletionTime string
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
-
-module registry 'registry/main.bicep' = {
-  name: 'registry'
-  params: {
-    containerRegistryName: 'cr${projectName}${environmentName}${resourceToken}'
-     location:location
-     vnetId:vnetId
-  }
-
-}
 
 module search 'search/main.bicep' = { 
   name: 'search'
@@ -58,7 +48,7 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountId:storageAccountId
     storageAccountTarget:storageAccountTarget
     storageAccountName:storageAccountName
-    containerRegistryID: registry.outputs.containerRegistryID
+    containerRegistryID: containerRegistryID
     targetAutoDeletionTime:targetAutoDeletionTime
     agentSubnetId:agentSubnetId
   }

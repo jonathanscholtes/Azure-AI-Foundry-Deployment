@@ -16,6 +16,7 @@ param agentSubnetId string
 
 
 
+
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
@@ -70,6 +71,7 @@ module aiHub 'modules/ai-hub.bicep' = {
     blobContainerName:'workspace'
     containerRegistryID:containerRegistryID
   }
+  dependsOn:[aiServicePE]
 }
 
 module aihubPE 'modules/ai-hub-private-endpoint.bicep' = { 
@@ -90,8 +92,10 @@ module aiProject 'modules/ai-project.bicep' = {
     location: location
     aiProjectName: aiProjectName
     aiProjectFriendlyName: 'AI Demo Project'
-    aiProjectDescription: 'Project for demo'    
+    aiProjectDescription: 'Project for demo'   
+  
   }
+  dependsOn:[aihubPE]
 }
 
 module aiModels 'modules/ai-models.bicep' = {
@@ -106,7 +110,7 @@ module aiModels 'modules/ai-models.bicep' = {
 }
 
 
-module addCapabilityHost 'modules/add-capability-host.bicep' = {
+/*module addCapabilityHost 'modules/add-capability-host.bicep' = {
   name: 'addCapabilityHost'
   params: {
     capabilityHostName: '${environmentName}-${resourceToken}'
@@ -117,7 +121,7 @@ module addCapabilityHost 'modules/add-capability-host.bicep' = {
     customerSubnetId: agentSubnetId
   }
 
-}
+}*/
 
 module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = {
   name: 'aiOnlineEndpoints'

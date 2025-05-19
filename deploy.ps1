@@ -8,7 +8,7 @@ param (
 # Variables
 $projectName = "foundry"
 $environmentName = "demo"
-$templateFile = "main.bicep"
+$templateFile = "infra/main.bicep"
 $deploymentName = "foundrydeploy-$Location"
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
 
@@ -60,7 +60,7 @@ $functionAppName = $deploymentOutputJson.functionAppName.value
 
 Write-Host "Waiting for App Services before pushing code"
 
-$waitTime = 200  # Total wait time in seconds
+$waitTime = 60  # Total wait time in seconds
 
 # Display counter
 for ($i = $waitTime; $i -gt 0; $i--) {
@@ -76,8 +76,8 @@ Set-Location -Path .\scripts
 Write-Host "*****************************************"
 Write-Host "Deploying Function Application from scripts"
 Write-Host "If timeout occurs, rerun the following command from scripts:"
-Write-Host ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName"
-& .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName
+Write-Host ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName -pythonAppPath ..\src\DocumentProcessingFunction"
+& .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName -pythonAppPath "..\src\DocumentProcessingFunction"
 
 
 Set-Location -Path ..
