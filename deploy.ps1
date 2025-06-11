@@ -1,7 +1,8 @@
 param (
     [string]$Subscription,
     [string]$Location = "eastus2",
-    [switch]$DeployVpnGateway
+    [switch]$DeployVpnGateway,
+    [switch]$DeployOnlineEndpoints
 )
 
 
@@ -47,6 +48,7 @@ $deploymentOutput = az deployment sub create `
         projectName=$projectName `
         location=$Location `
         deployVpnGateway=$($DeployVpnGateway.IsPresent) `
+        deployOnlineEndpoints=$($DeployOnlineEndpoints.IsPresent) `
         rootCertData="$rootCertData" `
         timestamp=$timestamp `
         targetAutoDeletionTime=$targetAutoDeletionTime `

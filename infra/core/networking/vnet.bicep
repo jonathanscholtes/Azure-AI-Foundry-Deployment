@@ -1,6 +1,5 @@
 param vnetName string
 param vnetLocation string
-param addressPrefix string = '10.0.0.0/16'
 param dnsResolverName string
 
 
@@ -10,7 +9,8 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        addressPrefix
+        '10.0.0.0/16'
+        '192.168.0.0/16'
       ]
     }
     dhcpOptions: {
@@ -111,7 +111,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'agentSubnet'
         properties: {
-          addressPrefix: '10.0.7.0/24'
+          addressPrefix: '192.168.7.0/24'
           privateEndpointNetworkPolicies: 'Enabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
       
@@ -160,6 +160,10 @@ resource inboundEndpoint 'Microsoft.Network/dnsResolvers/inboundEndpoints@2023-0
     ]
   }
 }
+
+
+
+
 
 
 output vnetId string = vnet.id

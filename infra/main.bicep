@@ -17,6 +17,8 @@ param location string
 @description('Flag to control VPN Gateway deployment')
 param deployVpnGateway bool = false
 
+param deployOnlineEndpoints bool = false
+
 param rootCertData string
 
 @description('Timestamp for the deployment')
@@ -112,6 +114,7 @@ module azureai 'core/ai/main.bicep' = {
     targetAutoDeletionTime:targetAutoDeletionTime
     agentSubnetId: networking.outputs.agentSubnetId
     containerRegistryID: platform.outputs.containerRegistryID
+    deployOnlineEndpoints:deployOnlineEndpoints
   }
 
 }

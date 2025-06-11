@@ -65,71 +65,15 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
     containerRegistry: containerRegistryID
     applicationInsights: appInsightsResourceId
     storageAccount: storageAccountResourceId
-    systemDatastoresAuthMode: 'AccountKey'
+    systemDatastoresAuthMode: 'identity'
     provisionNetworkNow: true
     publicNetworkAccess: 'Disabled'
     managedNetwork: {
       isolationMode: 'AllowInternetOutbound'
-      outboundRules: {      
-        PE_AI_Service: {
-          type: 'PrivateEndpoint'
-          destination: {
-            serviceResourceId: aiServicesResourceId
-            subresourceTarget: 'account'
-            sparkEnabled: true
-
-          }
-          category: 'UserDefined'
-        }
-        PE_AI_Search: {
-          type: 'PrivateEndpoint'
-          destination: {
-            serviceResourceId: aiSearchResourceId
-            subresourceTarget: 'searchService'
-            sparkEnabled: true
-
-          }
-          category: 'UserDefined'
-        }
-      }
+    
     }
      sharedPrivateLinkResources: [
-      {
-        name: 'aiSearch-private-link'
-        properties: {
-          groupId: 'searchService'
-          privateLinkResourceId: aiSearchResourceId
-          requestMessage: 'Private link to Azure AI Search'
-
-        }
-      }
-      {
-        name: 'aiServices-private-link'
-        properties: {
-          groupId: 'account'
-          privateLinkResourceId: aiServicesResourceId
-          requestMessage: 'Private link to Azure AI Services'
-
-        }
-      }
-      {
-        name: 'storage-blob-private-link'
-        properties: {
-          groupId: 'blob'
-          privateLinkResourceId: storageAccountResourceId
-          requestMessage: 'Private link to Storage Account'
-
-        }
-      }
-      {
-        name: 'storage-file-private-link'
-        properties: {
-          groupId: 'file'
-          privateLinkResourceId: storageAccountResourceId
-          requestMessage: 'Private link to Storage Account'
-
-        }
-      }
+      
     ]
   }
   kind: 'hub'

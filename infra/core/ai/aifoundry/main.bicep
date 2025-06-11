@@ -13,7 +13,7 @@ param storageAccountId string
 param storageAccountTarget string
 param storageAccountName string
 param agentSubnetId string
-
+param deployOnlineEndpoints bool = false
 
 
 
@@ -110,7 +110,7 @@ module aiModels 'modules/ai-models.bicep' = {
 }
 
 
-/*module addCapabilityHost 'modules/add-capability-host.bicep' = {
+module addCapabilityHost 'modules/add-capability-host.bicep' = {
   name: 'addCapabilityHost'
   params: {
     capabilityHostName: '${environmentName}-${resourceToken}'
@@ -118,12 +118,12 @@ module aiModels 'modules/ai-models.bicep' = {
     aiProjectName: aiProjectName
     aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
     aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
-    customerSubnetId: agentSubnetId
+    customerSubnetId:agentSubnetId
   }
+  dependsOn:[aiProject]
+}
 
-}*/
-
-module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = {
+module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = if (deployOnlineEndpoints){
   name: 'aiOnlineEndpoints'
   params: { 
     aiProjectName:aiProjectName
@@ -133,7 +133,7 @@ module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = {
     resourceToken:resourceToken
     targetAutoDeletionTime:targetAutoDeletionTime
   }
-  dependsOn:[aiProject]
+  dependsOn:[aiProject,addCapabilityHost]
 }
 
 

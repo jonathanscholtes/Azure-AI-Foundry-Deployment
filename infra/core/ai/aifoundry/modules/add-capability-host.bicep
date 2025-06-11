@@ -38,6 +38,7 @@ resource hubCapabilityHost 'Microsoft.MachineLearningServices/workspaces/capabil
    capabilityHostKind: 'Agents'
    customerSubnet: customerSubnetId
  }
+ dependsOn:[aiHub]
 }
 
 resource projectCapabilityHost 'Microsoft.MachineLearningServices/workspaces/capabilityHosts@2025-01-01-preview' = {
@@ -50,6 +51,6 @@ resource projectCapabilityHost 'Microsoft.MachineLearningServices/workspaces/cap
     storageConnections: storageConnections
   }
   dependsOn: [
-    hubCapabilityHost
+    hubCapabilityHost, aiProject
   ]
 }
