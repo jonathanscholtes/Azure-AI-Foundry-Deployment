@@ -9,20 +9,19 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
-        '192.168.0.0/16'
+        '172.16.0.0/16'
       ]
     }
     dhcpOptions: {
       dnsServers: [
-        '10.0.6.4'
+        '172.16.6.4'
       ]
     }
     subnets: [
       {
         name: 'webSubnet'
         properties: {
-          addressPrefix: '10.0.1.0/24'
+          addressPrefix: '172.16.1.0/24'
           privateEndpointNetworkPolicies: 'Enabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
        
@@ -41,7 +40,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'aiSubnet'
         properties: {
-          addressPrefix: '10.0.2.0/24'
+          addressPrefix: '172.16.2.0/24'
           privateEndpointNetworkPolicies: 'Enabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
        
@@ -56,7 +55,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'dataSubnet'
         properties: {
-          addressPrefix: '10.0.3.0/24'
+          addressPrefix: '172.16.3.0/24'
           privateEndpointNetworkPolicies: 'Enabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
            
@@ -82,7 +81,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'servicesSubnet'
         properties: {
-          addressPrefix: '10.0.4.0/24'
+          addressPrefix: '172.16.4.0/24'
           privateEndpointNetworkPolicies: 'Disabled'
           privateLinkServiceNetworkPolicies: 'Disabled'
     
@@ -92,7 +91,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'gatewaySubnet'
         properties: {
-          addressPrefix: '10.0.5.0/24'
+          addressPrefix: '172.16.5.0/24'
           privateEndpointNetworkPolicies: 'Enabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
         
@@ -100,9 +99,9 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
         type: 'Microsoft.Network/virtualNetworks/subnets'
       }  
       {
-        name: 'dnsResolverSubnet'  // New subnet for DNS Private Resolver
+        name: 'dnsResolverSubnet' 
         properties: {
-          addressPrefix: '10.0.6.0/24'
+          addressPrefix: '172.16.6.0/24'
           privateEndpointNetworkPolicies: 'Disabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
         }
@@ -111,7 +110,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'agentSubnet'
         properties: {
-          addressPrefix: '192.168.7.0/24'
+          addressPrefix: '172.16.7.0/24'
           privateEndpointNetworkPolicies: 'Enabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
       
@@ -152,7 +151,7 @@ resource inboundEndpoint 'Microsoft.Network/dnsResolvers/inboundEndpoints@2023-0
     ipConfigurations: [
       {
         privateIpAllocationMethod: 'Static'
-        privateIpAddress: '10.0.6.4' 
+        privateIpAddress: '172.16.6.4' 
         subnet: {
           id: '${vnet.id}/subnets/dnsResolverSubnet'
         }

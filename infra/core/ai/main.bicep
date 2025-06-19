@@ -28,6 +28,7 @@ module search 'search/main.bicep' = {
   location:location
   identityName: identityName
   searchServicename: searchServicename
+  searchPrivateLinkName: 'ple-search-${resourceToken}'
   subnetName: subnetName
   vnetId: vnetId
   }
@@ -58,7 +59,18 @@ module aifoundry 'aifoundry/main.bicep' = {
 
 }
 
-
+module aiRoleAssignment 'role-assignement.bicep' = {
+  name: 'aiRoleAssignment'
+  params: { 
+    aiHubName:aifoundry.outputs.aiHubName
+    aiHubPrincipalId:aifoundry.outputs.aiHubPrincipalId
+    searchServiceName: search.outputs.searchServiceName
+    searchServicePrincipalId:search.outputs.searchServicePrincipalId
+    aiServicesName:aifoundry.outputs.aiServicesName
+    aiServicesPrincipalId:aifoundry.outputs.aiServicesPrincipalId
+    storageName:storageAccountName
+  }
+ }
 
 output aiservicesTarget string = aifoundry.outputs.aiservicesTarget
 output OpenAIEndPoint string = aifoundry.outputs.OpenAIEndPoint

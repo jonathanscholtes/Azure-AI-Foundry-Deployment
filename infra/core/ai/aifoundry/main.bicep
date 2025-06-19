@@ -81,6 +81,7 @@ module aihubPE 'modules/ai-hub-private-endpoint.bicep' = {
     location:location
     subnetName:'servicesSubnet'
     vnetId:vnetId
+    resourceToken:resourceToken
   }
   dependsOn:[aiHub]
 }
@@ -92,7 +93,7 @@ module aiProject 'modules/ai-project.bicep' = {
     location: location
     aiProjectName: aiProjectName
     aiProjectFriendlyName: 'AI Demo Project'
-    aiProjectDescription: 'Project for demo'   
+    aiProjectDescription: 'Project for demo'  
   
   }
   dependsOn:[aihubPE]
@@ -139,3 +140,7 @@ module aiOnlineEndpoints 'modules/online-endpoints/main.bicep' = if (deployOnlin
 
 output aiservicesTarget string = aiServices.outputs.aiservicesTarget
 output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint
+output aiHubPrincipalId string = aiHub.outputs.aiHubPrincipalId
+output aiHubName string = aiHub.outputs.aiHubName
+output aiServicesName string = aiServices.outputs.aiServicesName
+output aiServicesPrincipalId string = aiServices.outputs.aiServicesPrincipalId

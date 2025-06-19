@@ -34,7 +34,7 @@ The solution automates the deployment of **Azure AI Foundry**, including AI Hubs
 - **Infrastructure as Code:**  
   - Automates deployment with **Bicep** and **PowerShell** using modular, reusable templates.
 
-![design](./media/design.png)
+![design](./media/design2.png)
 
 ## 🔗 Reference Materials
 
@@ -45,6 +45,8 @@ This project builds on the Azure AI Baseline Reference Architecture to help you 
 
 Please review the **quickstart** templates that demonstrates how to set up Azure AI Foundry with a network-restricted configuration.
 🔗 [Azure AI Foundry Template - Network Restricted ](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.machinelearningservices/aifoundry-network-restricted)  
+
+🔗 [Azure AI Foundry Agents Template - Network Restricted ](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.azure-ai-agent-service/network-secured-agent)  
 
 **AI Model Deployment in Azure AI Foundry**  
 To explore model deployment options, including serverless models, fine-tuning, and inference endpoints, refer to the official documentation.  

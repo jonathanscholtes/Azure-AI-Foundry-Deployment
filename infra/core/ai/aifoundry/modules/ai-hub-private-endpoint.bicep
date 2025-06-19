@@ -10,6 +10,8 @@ param vnetId string
 @description('Name of the subnet for the private endpoint')
 param subnetName string
 
+param resourceToken string
+
 var privateEndpointName = '${aiHubName}-private-endpoint'
 var privateDnsZoneName = 'privatelink.api.azureml.ms'
 var privateDnsZoneName2 = 'privatelink.notebooks.azure.net'
@@ -19,16 +21,18 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2023-08-01-preview'
   name: aiHubName
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
   name: privateEndpointName
   location: location
   properties: {
     subnet: {
       id: '${vnetId}/subnets/${subnetName}'
     }
+    customNetworkInterfaceName: '${aiHubName}-nic-${resourceToken}'
     privateLinkServiceConnections: [
       {
-        name: 'workspace'
+        name: aiHubName
         properties: {
           privateLinkServiceId: aiHub.id
           groupIds: ['amlworkspace']
@@ -36,72 +40,70 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
       }
     ]
   }
-  dependsOn: [
-    aiHub
-  ]
+
 }
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: privateDnsZoneName
+resource privateLinkApi 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.api.azureml.ms'
   location: 'global'
+  tags: {}
   properties: {}
-  dependsOn: [
-    privateEndpoint
-  ]
 }
 
-resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  parent: privateDnsZone
-  name: '${privateDnsZoneName}-link'
+resource privateLinkNotebooks 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.notebooks.azure.net'
+  location: 'global'
+  tags: {}
+  properties: {}
+}
+
+resource vnetLinkApi 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: privateLinkApi
+  name: '${uniqueString(vnetId)}-api'
   location: 'global'
   properties: {
-    registrationEnabled: false
     virtualNetwork: {
       id: vnetId
     }
+    registrationEnabled: false
   }
 }
 
-resource privateDnsZone2 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: privateDnsZoneName2
-  location: 'global'
-  properties: {}
-  dependsOn: [
-    privateEndpoint
-  ]
-}
-
-resource privateDnsZoneLink2 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  parent: privateDnsZone2
-  name: '${privateDnsZoneName2}-link'
+resource vnetLinkNotebooks 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: privateLinkNotebooks
+  name: '${uniqueString(vnetId)}-notebooks'
   location: 'global'
   properties: {
-    registrationEnabled: false
     virtualNetwork: {
       id: vnetId
     }
+    registrationEnabled: false
   }
 }
 
-resource pvtEndpointDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = {
-  name: pvtEndpointDnsGroupName
+
+
+resource dnsZoneGroupAiHub 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01' = {
+  parent: privateEndpoint
+  name: 'default'
   properties: {
     privateDnsZoneConfigs: [
       {
-        name: 'config1'
+        name: 'privatelink-api-azureml-ms'
         properties: {
-          privateDnsZoneId: privateDnsZone.id
+            privateDnsZoneId: privateLinkApi.id
         }
       }
       {
-        name: 'config2'
+        name: 'privatelink-notebooks-azure-net'
         properties: {
-          privateDnsZoneId: privateDnsZone2.id
+            privateDnsZoneId: privateLinkNotebooks.id
         }
       }
     ]
   }
   dependsOn: [
-    privateEndpoint
+    vnetLinkApi
+    vnetLinkNotebooks
   ]
 }

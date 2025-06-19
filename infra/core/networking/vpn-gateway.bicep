@@ -54,7 +54,7 @@ resource vnetGateway 'Microsoft.Network/virtualNetworkGateways@2023-05-01' = {
     vpnClientConfiguration: {
       vpnClientAddressPool: {
         addressPrefixes: [
-          '172.16.33.0/24'
+          '172.17.33.0/24'
         ]
       }
     

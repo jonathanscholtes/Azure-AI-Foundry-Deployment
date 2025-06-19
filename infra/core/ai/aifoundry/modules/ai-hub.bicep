@@ -45,6 +45,8 @@ param blobContainerName string
 @description('Name of the Azure Storage Account')
 param storageAccountName string
 
+
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
   name: managedIdentityName
 }
@@ -138,3 +140,4 @@ output aiHubResourceId string = aiHub.id
 output aiHubName string = aiHubName
 output aiSearchConnectionName string = aiSearchConnectionName
 output aiServicesConnectionName string = aiServicesConnectionName
+output aiHubPrincipalId string = aiHub.identity.principalId

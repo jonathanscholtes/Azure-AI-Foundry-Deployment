@@ -4,8 +4,12 @@ param vnetId string
 param subnetName string
 
 var privateEndpointName = '${aiServicesName}-pe'
-var privateDnsZoneName = 'privatelink.openai.azure.com'
-var pvtEndpointDnsGroupName = '${privateEndpointName}/default'
+
+
+var cognitiveServicesPrivateDnsZoneName = 'privatelink.cognitiveservices.azure.com'
+var openAiPrivateDnsZoneName = 'privatelink.openai.azure.com'
+var aiServicesPrivateDnsZoneName = 'privatelink.services.ai.azure.com'
+
 
 
 resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
@@ -13,7 +17,7 @@ resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' existing =
 
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+resource aiServicesPrivateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   name: privateEndpointName
   location: location
   properties: {
@@ -22,9 +26,14 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
     }
     privateLinkServiceConnections: [
       {
-        name: 'aiServiceConnection'
+        name: privateEndpointName
         properties: {
           privateLinkServiceId: aiServices.id
+            privateLinkServiceConnectionState: {
+            status: 'Approved'
+            description: 'Auto-Approved'
+            actionsRequired: 'None'
+          }
           groupIds: [
             'account'
           ]
@@ -38,19 +47,19 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   ]
 }
 
-
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: privateDnsZoneName
+resource cognitiveServicesPrivateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: cognitiveServicesPrivateDnsZoneName
   location: 'global'
-  properties: {}
-  dependsOn: [
-    privateEndpoint
-  ]
 }
 
-resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  parent: privateDnsZone
-  name: '${privateDnsZoneName}-link'
+resource openAiPrivateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: openAiPrivateDnsZoneName
+  location: 'global'
+}
+
+resource cognitiveServicesVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: cognitiveServicesPrivateDnsZone
+  name: uniqueString(vnetId)
   location: 'global'
   properties: {
     registrationEnabled: false
@@ -60,19 +69,59 @@ resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
   }
 }
 
-resource pvtEndpointDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = {
-  name: pvtEndpointDnsGroupName
+resource openAiVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: openAiPrivateDnsZone
+  name: uniqueString(vnetId)
+  location: 'global'
   properties: {
-    privateDnsZoneConfigs: [
-      {
-        name: 'config1'
-        properties: {
-          privateDnsZoneId: privateDnsZone.id
-        }
-      }
-    ]
+    registrationEnabled: false
+    virtualNetwork: {
+      id: vnetId
+    }
   }
-  dependsOn: [
-    privateEndpoint
+}
+
+resource aiServicesPrivateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: aiServicesPrivateDnsZoneName
+  location: 'global'
+}
+
+// Link this DNS zone to your VNet
+resource aiServicesPrivateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: aiServicesPrivateDnsZone
+  name: uniqueString(vnetId)
+  location: 'global'
+  properties: {
+    registrationEnabled: false
+    virtualNetwork: {
+      id: vnetId
+    }
+  }
+}
+
+resource aiServicesPrivateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01' = {
+  parent: aiServicesPrivateEndpoint
+  name: 'default'
+  properties: {
+  privateDnsZoneConfigs: [
+    {
+      name: replace(openAiPrivateDnsZoneName, '.', '-')
+      properties: {
+        privateDnsZoneId: openAiPrivateDnsZone.id
+      }
+    }
+    {
+      name: replace(cognitiveServicesPrivateDnsZoneName, '.', '-')
+      properties: {
+        privateDnsZoneId: cognitiveServicesPrivateDnsZone.id
+      }
+    }
+    {
+      name: replace(aiServicesPrivateDnsZoneName, '.', '-')
+      properties: {
+        privateDnsZoneId: aiServicesPrivateDnsZone.id
+      }
+    }
   ]
+}
 }

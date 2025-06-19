@@ -14,10 +14,7 @@ resource aiServices 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = 
   name: aiServicesName
   location: location
   identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${managedIdentity.id}': {}
-    }
+    type: 'SystemAssigned'
   }
   sku: {
     name: 'S0'
@@ -32,6 +29,7 @@ resource aiServices 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = 
       virtualNetworkRules: [
         {
           id: '${vnetId}/subnets/${subnetName}'
+          ignoreMissingVnetServiceEndpoint: true
         }
       ]
     }
@@ -63,3 +61,5 @@ resource roleAssignmentML 'Microsoft.Authorization/roleAssignments@2020-04-01-pr
 output aiservicesID string = aiServices.id
 output aiservicesTarget string = aiServices.properties.endpoint
 output OpenAIEndPoint string = 'https://${customSubdomain}.openai.azure.com'
+output aiServicesName string = aiServices.name
+output aiServicesPrincipalId string = aiServices.identity.principalId

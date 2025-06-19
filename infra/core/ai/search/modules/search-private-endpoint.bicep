@@ -2,55 +2,69 @@ param aiSearchName string
 param location string
 param vnetId string
 param subnetName string
+param searchPrivateLinkName string
 
 var privateEndpointName = '${aiSearchName}-pe'
-var privateDnsZoneName = 'privatelink.search.windows.net'
-var pvtEndpointDnsGroupName = '${privateEndpointName}/default'
 
 
-resource aiSearch 'Microsoft.Search/searchServices@2021-04-01-preview' existing = {
+var searchPrivateDnsZoneName = 'privatelink.search.windows.net'
+
+resource searchService 'Microsoft.Search/searchServices@2021-04-01-preview' existing = {
   name: aiSearchName
 
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+
+
+resource searchPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
   name: privateEndpointName
   location: location
   properties: {
-    subnet: {
-      id: '${vnetId}/subnets/${subnetName}'
-    }
     privateLinkServiceConnections: [
       {
-        name: 'aiServiceConnection'
+        name: privateEndpointName
         properties: {
-          privateLinkServiceId: aiSearch.id
           groupIds: [
             'searchService'
           ]
-          
+          privateLinkServiceId: searchService.id
+          privateLinkServiceConnectionState: {
+            status: 'Approved'
+            description: 'Auto-Approved'
+            actionsRequired: 'None'
+          }
+        }
+      }
+    ]
+    subnet: {
+      id: '${vnetId}/subnets/${subnetName}'
+    }
+  }
+}
+
+resource searchPrivateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: searchPrivateDnsZoneName
+  location: 'global'
+}
+
+resource searchPrivateEndpointDns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01' = {
+  parent: searchPrivateEndpoint
+  name: 'search-PrivateDnsZoneGroup'
+  properties: {
+    privateDnsZoneConfigs: [
+      {
+        name: searchPrivateDnsZoneName
+        properties: {
+          privateDnsZoneId: searchPrivateDnsZone.id
         }
       }
     ]
   }
-  dependsOn: [
-    aiSearch
-  ]
 }
 
-
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: privateDnsZoneName
-  location: 'global'
-  properties: {}
-  dependsOn: [
-    privateEndpoint
-  ]
-}
-
-resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  parent: privateDnsZone
-  name: '${privateDnsZoneName}-link'
+resource searchPrivateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: searchPrivateDnsZone
+  name: uniqueString(searchService.id)
   location: 'global'
   properties: {
     registrationEnabled: false
@@ -58,21 +72,4 @@ resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
       id: vnetId
     }
   }
-}
-
-resource pvtEndpointDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = {
-  name: pvtEndpointDnsGroupName
-  properties: {
-    privateDnsZoneConfigs: [
-      {
-        name: 'config1'
-        properties: {
-          privateDnsZoneId: privateDnsZone.id
-        }
-      }
-    ]
-  }
-  dependsOn: [
-    privateEndpoint
-  ]
 }
