@@ -41,16 +41,25 @@ The solution automates the deployment of **Azure AI Foundry**, including AI Hubs
 
  **Azure AI Foundry Reference Architecture**  
 This project builds on the Azure AI Baseline Reference Architecture to help you design and deploy enterprise-grade generative AI solutions. It incorporates networking, security, and authorization best practices, enabling a scalable and secure AI environment.  
+
 🔗 [Azure AI Baseline Reference Architecture](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/architecture/baseline-openai-e2e-chat)  
 
+🔗 [Azure AI Foundry Agents Network-Secured Environment](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/virtual-networks)  
+
+🔗 [Private storage configuration](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/configure-private-link?tabs=azure-portal&pivots=hub-project#private-storage-configuration)  
+
 Please review the **quickstart** templates that demonstrates how to set up Azure AI Foundry with a network-restricted configuration.
+
 🔗 [Azure AI Foundry Template - Network Restricted ](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.machinelearningservices/aifoundry-network-restricted)  
 
 🔗 [Azure AI Foundry Agents Template - Network Restricted ](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.azure-ai-agent-service/network-secured-agent)  
 
+
 **AI Model Deployment in Azure AI Foundry**  
 To explore model deployment options, including serverless models, fine-tuning, and inference endpoints, refer to the official documentation.  
+
 🔗 [Deploy AI Models in Azure AI Foundry Portal](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/deployments-overview)  
+
 🔗 [Deploy models as serverless APIs](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/deploy-models-serverless)  
 
 
