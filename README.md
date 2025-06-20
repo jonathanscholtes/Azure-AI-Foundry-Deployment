@@ -34,7 +34,7 @@ The solution automates the deployment of **Azure AI Foundry**, including AI Hubs
 - **Infrastructure as Code:**  
   - Automates deployment with **Bicep** and **PowerShell** using modular, reusable templates.
 
-![design](./media/design2.png)
+![design](./media/design3.png)
 
 ## 🔗 Reference Materials
 

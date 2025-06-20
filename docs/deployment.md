@@ -19,10 +19,14 @@ cd Azure-AI-Foundry-Deployment
 
 ### 2. Deploy the Solution  
 
-Run the following PowerShell command to deploy the solution. Replace the placeholders with your actual subscription name and Azure region. The `-DeployVpnGateway` flag is optional for deploying the Azure VPN Gateway:
+Use the following PowerShell command to deploy the solution. Be sure to replace the placeholders with your actual subscription name and Azure region.
+
+- The `-DeployVpnGateway` flag is optional and should be used if you need to deploy an Azure VPN Gateway (required when ExpressRoute or an existing VPN is not configured).
+- The `-DeployOnlineEndpoints` flag is optional and enables deployment of online endpoint models using managed compute.
+
 
 ```powershell
-.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -DeployVpnGateway
+.\deploy.ps1 -Subscription '[Your Subscription Name]' -Location 'eastus2' -DeployVpnGateway [Optional] -DeployOnlineEndpoints [Optional]
 ```
 
 ✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **60 minutes** to complete.
