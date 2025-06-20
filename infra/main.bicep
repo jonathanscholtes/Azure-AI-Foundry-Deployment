@@ -115,12 +115,13 @@ module azureai 'core/ai/main.bicep' = {
     agentSubnetId: networking.outputs.agentSubnetId
     containerRegistryID: platform.outputs.containerRegistryID
     deployOnlineEndpoints:deployOnlineEndpoints
+    storagePrivateEndpointName:data.outputs.blobPrivateEndpointName
   }
 
 }
 
-module apps 'core/app/main.bicep' ={ 
-  name: 'apps'
+module appsServices 'core/app/main.bicep' ={ 
+  name: 'appsServices'
   scope: resourceGroup
   params:{
     projectName:projectName
@@ -131,31 +132,26 @@ module apps 'core/app/main.bicep' ={
 }
 
 
-module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
-  name: 'loaderFunctionWebApp'
+module apps 'app/main.bicep' = {
+  name: 'applications'
   scope: resourceGroup
   params: { 
     location: location
-    identityName: security.outputs.managedIdentityName
-    functionAppName: 'func-loader-${resourceToken}'
-    functionAppPlanName: apps.outputs.appServicePlanName
-    StorageBlobURL: data.outputs.storageAccountBlobEndPoint
-    StorageAccountName: data.outputs.storageAccountName
+    managedIdentityName: security.outputs.managedIdentityName
+    appServicePlanName: appsServices.outputs.appServicePlanName
+    storageAccountBlobEndPoint: data.outputs.storageAccountBlobEndPoint
+    storageAccountName: data.outputs.storageAccountName
     logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
     appInsightsName: monitor.outputs.applicationInsightsName
-    keyVaultUri:security.outputs.keyVaultUri
+    keyVaultName:security.outputs.keyVaultName
     OpenAIEndPoint: azureai.outputs.OpenAIEndPoint
-    searchServiceEndpoint: azureai.outputs.searchServiceEndpoint
-    vnetId: networking.outputs.vnetId
-    subnetName: 'dataSubnet'
-    azureAiSearchBatchSize: 100
-    documentChunkOverlap: 500
-    documentChunkSize: 2000
+    searchServicename: azureai.outputs.searchServiceName
+    vnetId: networking.outputs.vnetId 
+    resourceToken:resourceToken
   
   }
 }
 
 
-
 output resourceGroupName string = resourceGroup.name
-output functionAppName string = loaderFunctionWebApp.outputs.functionAppName
+output functionAppName string = apps.outputs.functionAppName

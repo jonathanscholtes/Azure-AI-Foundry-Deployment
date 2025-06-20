@@ -125,3 +125,6 @@ resource aiServicesPrivateDnsZoneGroup 'Microsoft.Network/privateEndpoints/priva
   ]
 }
 }
+
+
+output aiServicesPrivateEndpointName string = privateEndpointName

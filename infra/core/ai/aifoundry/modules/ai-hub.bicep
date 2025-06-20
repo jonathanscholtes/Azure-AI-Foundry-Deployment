@@ -87,11 +87,9 @@ resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/conn
   properties: {
     category: 'AzureOpenAI'
     target: aiServicesEndpoint
-    authType: 'ApiKey'
+    authType: 'AAD'
     isSharedToAll: true
-    credentials: {
-      key: '${listKeys(aiServicesResourceId, '2021-10-01').key1}'
-    }
+  
     metadata: {
       ApiType: 'Azure'
       ResourceId: aiServicesResourceId
@@ -105,11 +103,9 @@ resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connec
   properties: {
     category: 'CognitiveSearch'
     target: aiSearchEndpoint
-    authType: 'ApiKey'
+    authType: 'AAD'
     isSharedToAll: true
-    credentials: {
-      key: '${listAdminKeys(aiSearchResourceId, '2021-04-01-preview').primaryKey}'
-    }
+
     metadata: {
       ApiType: 'Azure'
       ResourceId: aiSearchResourceId

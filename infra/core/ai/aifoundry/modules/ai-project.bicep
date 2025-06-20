@@ -28,4 +28,4 @@ resource aiProject 'Microsoft.MachineLearningServices/workspaces@2023-08-01-prev
 }
 
 
-
+output aiProjectPrincipalId string = aiProject.identity.principalId

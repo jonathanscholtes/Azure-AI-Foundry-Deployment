@@ -14,7 +14,7 @@ param subnetName string
 param documentChunkSize int = 2000
 param documentChunkOverlap int = 500
 param azureAiSearchBatchSize int = 100
-
+param azureAISearchKey string
 
 
 var blob_uri = 'https://${StorageAccountName}.blob.core.windows.net'
@@ -108,6 +108,10 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'AZURE_AI_SEARCH_ENDPOINT'
           value: searchServiceEndpoint
         } 
+        {
+          name:'AZURE_AI_SEARCH_API_KEY'
+          value:azureAISearchKey
+        }
         {
           name: 'AZURE_AI_SEARCH_BATCH_SIZE'
           value: string(azureAiSearchBatchSize)

@@ -3,7 +3,7 @@ param identityName string
 param location string
 param vnetId string
 param subnetName string
-param searchPrivateLinkName string
+
 
 module search_service 'modules/search-service.bicep' = { 
  name: 'search_service'
@@ -38,7 +38,6 @@ module searchPE 'modules/search-private-endpoint.bicep' = {
     aiSearchName:searchServicename
     location:location
     subnetName: 'servicesSubnet'
-    searchPrivateLinkName:searchPrivateLinkName
   }
   dependsOn:[search_service]
 }
@@ -48,3 +47,4 @@ output searchServiceId string = search_service.outputs.searchServiceId
 output searchServiceEndpoint string = search_service.outputs.searchServiceEndpoint
 output searchServicePrincipalId string = search_service.outputs.searchServicePrincipalId
 output searchServiceName string = search_service.outputs.searchServiceName
+output searchPrivateEndpointName string = searchPE.outputs.searchPrivateEndpointName

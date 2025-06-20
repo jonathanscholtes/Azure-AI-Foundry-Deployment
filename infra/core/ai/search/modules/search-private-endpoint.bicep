@@ -2,7 +2,7 @@ param aiSearchName string
 param location string
 param vnetId string
 param subnetName string
-param searchPrivateLinkName string
+
 
 var privateEndpointName = '${aiSearchName}-pe'
 
@@ -73,3 +73,6 @@ resource searchPrivateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtual
     }
   }
 }
+
+
+output searchPrivateEndpointName string = privateEndpointName

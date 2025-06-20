@@ -69,3 +69,6 @@ resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneG
   }
   dependsOn: [privateEndpoint, privateDnsZone]
 }
+
+
+output privateEndpointName string = privateEndpoint.name

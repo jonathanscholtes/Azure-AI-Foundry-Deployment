@@ -1,5 +1,6 @@
 import azure.functions as func
 from azure.identity import DefaultAzureCredential
+from azure.core.credentials import AzureKeyCredential
 from azure.storage.blob import BlobServiceClient
 from azure.search.documents import SearchClient
 from azure.search.documents.indexes import SearchIndexClient
@@ -79,7 +80,9 @@ def Loaders(myblob: func.InputStream):
 
         logging.info(f"****** Loading Index *****")
 
-        AISearchIndexLoader(embeddings,credential,logging,int(environ.get("AZURE_AI_SEARCH_BATCH_SIZE"))).populate_search_index(chunks)
+
+
+        AISearchIndexLoader(embeddings,logging,int(environ.get("AZURE_AI_SEARCH_BATCH_SIZE"))).populate_search_index(chunks)
 
 
         blobManager = BlobManager()
@@ -155,7 +158,7 @@ class DocumentLoader:
 
 
 class AISearchIndexLoader:
-    def __init__(self, embeddings, credential,logging, batch_size):
+    def __init__(self, embeddings,logging, batch_size):
         self.logger = logging
         self.embeddings = embeddings
         self.batch_size = batch_size
@@ -163,6 +166,13 @@ class AISearchIndexLoader:
          # Configuration for Azure Cognitive Search
         search_endpoint = environ["AZURE_AI_SEARCH_ENDPOINT"]
         self.index_name = environ["AZURE_AI_SEARCH_INDEX"]
+        search_api_key = environ["AZURE_AI_SEARCH_API_KEY"]
+
+        ### Switched to Key to resolve ###
+        ### - occasional random failures:Failed to get Azure RBAC authorization decision ###
+
+        # Initialize the Azure credentials
+        credential = AzureKeyCredential(search_api_key)
 
         # Create SearchClient
         self.search_client = SearchClient(endpoint=search_endpoint, index_name=self.index_name, credential=credential)

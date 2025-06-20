@@ -12,6 +12,7 @@ param storageAccountTarget string
 param storageAccountName string
 param agentSubnetId string
 param containerRegistryID string
+param storagePrivateEndpointName string
 
 param deployOnlineEndpoints bool = false
 
@@ -28,7 +29,6 @@ module search 'search/main.bicep' = {
   location:location
   identityName: identityName
   searchServicename: searchServicename
-  searchPrivateLinkName: 'ple-search-${resourceToken}'
   subnetName: subnetName
   vnetId: vnetId
   }
@@ -69,9 +69,14 @@ module aiRoleAssignment 'role-assignement.bicep' = {
     aiServicesName:aifoundry.outputs.aiServicesName
     aiServicesPrincipalId:aifoundry.outputs.aiServicesPrincipalId
     storageName:storageAccountName
+    aiProjectPrincipalId: aifoundry.outputs.aiProjectPrincipalId
+    aiServicesPrivateEndpointName: aifoundry.outputs.aiServicesPrivateEndpointName
+    searchPrivateEndpointName: search.outputs.searchPrivateEndpointName
+    storagePrivateEndpointName:storagePrivateEndpointName
   }
  }
 
 output aiservicesTarget string = aifoundry.outputs.aiservicesTarget
 output OpenAIEndPoint string = aifoundry.outputs.OpenAIEndPoint
 output searchServiceEndpoint string = search.outputs.searchServiceEndpoint
+output searchServiceName string = search.outputs.searchServiceName

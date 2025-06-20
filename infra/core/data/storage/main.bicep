@@ -55,6 +55,10 @@ module privateEndpoints 'modules/storage-private-endpoint.bicep' = [for endpoint
   }
 }]
 
+// Find the index of "blob" in endpointTypes
+var blobIndex = indexOf(endpointTypes, 'blob')
 
+
+output blobPrivateEndpointName string = privateEndpoints[blobIndex].outputs.privateEndpointName
 output storageAccountBlobEndPoint string = storageAccount.outputs.storageAccountBlobEndPoint
 output storageAccountId string = storageAccount.outputs.storageAccountId
