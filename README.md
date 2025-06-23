@@ -70,14 +70,17 @@ To explore model deployment options, including serverless models, fine-tuning, a
 
 Follow these key steps to successfully deploy Azure AI Foundry:
 
-### 1️⃣ [**Solution Deployment**](docs/deployment.md)
-- Step-by-step instructions for deploying Azure AI Foundry, including prerequisites and configuration.   
+### 1️⃣ [**Deploy the Solution**](docs/deployment.md)
+- Detailed instructions for deploying Azure AI Foundry, including prerequisites, configuration steps, and setup validation.   
 
 ### 2️⃣ [**Vector Processing Pipeline**](docs/vector-processing.md)
--  Guide for processing and indexing documents into Azure AI Search for vector search with Azure AI Foundry.  
+- Step-by-step guide for processing and indexing documents into Azure AI Search to enable vector search within Azure AI Foundry. 
 
-### 3️⃣ [**Validate Online Endpoint**](docs/online-endpoints.md)  
-- Instructions for validating the deployment and connectivity of the Hugging Face model hosted on an online endpoint.  
+### 3️⃣ [**Create and Test Agents**](docs/agents.md)
+- Instructions for building a QnA agent using Azure AI Agent Services, powered by Azure AI Search as the vector-based knowledge store.
+
+### 4️⃣ [**Validate Online Endpoint**](docs/online-endpoints.md)  
+- How to test and verify the online endpoint hosting a Hugging Face model to ensure successful deployment and connectivity. 
 
 ---
 
